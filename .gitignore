@@ -1,0 +1,82 @@
+echo '# C++ Compiled files
+*.o
+*.obj
+*.out
+*.exe
+*.so
+*.dll
+*.a
+*.lib
+*.dylib
+
+# Build directories
+build/
+bin/
+Debug/
+Release/
+x64/
+x86/
+CMakeFiles/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.code-workspace
+
+# CMake
+CMakeCache.txt
+CMakeUserPresets.json
+cmake_install.cmake
+Makefile
+
+# Qt
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+*.pro.user
+*.autosave
+
+# macOS
+.DS_Store
+*.dSYM/
+
+# Linux/Unix core dumps
+core
+*.core
+
+# Dependencies
+deps/
+third_party/
+
+# Password manager specific
+*.db
+*.sqlite
+config.ini
+secrets.dat
+
+# Temporary files
+*.tmp
+*.temp
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+logs/
+
+# Coverage reports
+coverage/
+*.gcda
+*.gcno
+
+# Generated documentation
+docs/html/
+docs/latex/
+
+# Package files
+*.tar.gz
+*.zip
+' > .gitignore
