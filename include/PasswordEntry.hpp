@@ -1,4 +1,4 @@
-#pragma once ////////////////
+#pragma once
 #include "Secret.hpp"
 #include <string>
 
