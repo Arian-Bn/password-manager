@@ -1,4 +1,5 @@
 echo '# C++ Compiled files
+program
 *.o
 *.obj
 *.out
