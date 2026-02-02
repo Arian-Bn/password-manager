@@ -11,9 +11,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Исходные файлы
 set(SOURCES
-    src/main.cpp
-    src/PasswordEntry.cpp
-    src/CreditCardEntry.cpp
+    src/entry.cpp
+    src/password_entry.cpp
+    src/note_entry.cpp
+    tests/main.cpp
 )
 
 # Исполняемый файл
