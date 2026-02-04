@@ -1,7 +1,5 @@
 #pragma once
-#include "../include/entry.hpp"
-#include "../include/note_entry.hpp"
-#include "../include/password_entry.hpp"
+#include "entry.hpp"
 #include <memory>
 #include <string>
 #include <vector>
@@ -11,8 +9,8 @@ public:
   Vault() = default;
   ~Vault() = default;
 
-  void addPasswordEntry(const std::string &title, const std::string &websit,
-                        const std::string &usrtname,
+  void addPasswordEntry(const std::string &title, const std::string &website,
+                        const std::string &username,
                         const std::string &password);
   void addNoteEntry(const std::string &title, const std::string &content);
 
@@ -20,7 +18,7 @@ public:
 
   void findByTitle(const std::string &title) const;
 
-  size_t getEntryCout() const { return entries_.size(); }
+  size_t getEntryCount() const { return entries_.size(); }
 
   void clear();
 
