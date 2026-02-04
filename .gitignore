@@ -1,4 +1,4 @@
-echo '# C++ Compiled files
+# C++ Compiled files
 program
 *.o
 *.obj
@@ -80,4 +80,4 @@ docs/latex/
 # Package files
 *.tar.gz
 *.zip
-' > .gitignore
+
