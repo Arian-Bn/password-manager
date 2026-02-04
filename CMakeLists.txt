@@ -14,6 +14,7 @@ set(SOURCES
     src/entry.cpp
     src/password_entry.cpp
     src/note_entry.cpp
+    src/vault.cpp
     tests/main.cpp
 )
 
