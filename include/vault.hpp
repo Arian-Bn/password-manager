@@ -20,6 +20,8 @@ public:
 
   size_t getEntryCount() const { return entries_.size(); }
 
+  bool deleteEntry(size_t index);
+
   void clear();
 
 private:

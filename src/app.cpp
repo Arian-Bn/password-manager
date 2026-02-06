@@ -9,10 +9,11 @@ void printMenu() {
   std::cout << "2. Add Note Entry\n";
   std::cout << "3. View All Entries\n";
   std::cout << "4. Search by Title\n";
-  std::cout << "5. Clear All Entries\n";
-  std::cout << "6. Show Entry Count\n";
+  std::cout << "5. Delete Entry by Index\n";
+  std::cout << "6. Clear All Entries\n";
+  std::cout << "7. Show Entry Count\n";
   std::cout << "0. Exit\n";
-  std::cout << "Chois: ";
+  std::cout << "Choice: ";
 }
 
 void ClearInputBuffer() {
@@ -79,11 +80,33 @@ int main() {
       break;
     }
 
-    case 5: // Clear All
+    case 5: { // Delete by Index
+      vault.displayAll();
+
+      if (vault.getEntryCount() == 0) {
+        break;
+      }
+
+      std::cout << "Enter entry number to delete (1 - " << vault.getEntryCount()
+                << "): ";
+      size_t index;
+      std::cin >> index;
+      ClearInputBuffer();
+
+      if (index >= 1 && index <= vault.getEntryCount()) {
+        vault.deleteEntry(index);
+      } else {
+        std::cout << "Invalid index!\n";
+      }
+
+      break;
+    }
+
+    case 6: // Clear All
       vault.clear();
       break;
 
-    case 6: // Count
+    case 7: // Count
       std::cout << "Total entries: " << vault.getEntryCount() << std::endl;
       break;
 
@@ -92,7 +115,7 @@ int main() {
       break;
 
     default:
-      std::cout << "Invalid choice. Tye again.\n";
+      std::cout << "Invalid choice. Try again.\n";
     }
   }
 

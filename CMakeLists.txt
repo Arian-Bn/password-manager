@@ -15,7 +15,7 @@ set(SOURCES
     src/password_entry.cpp
     src/note_entry.cpp
     src/vault.cpp
-    tests/main.cpp
+    src/app.cpp
 )
 
 # Исполняемый файл

@@ -56,6 +56,18 @@ void Vault::findByTitle(const std::string &title) const {
   }
 }
 
+bool Vault::deleteEntry(size_t index) {
+  if (index == 0 || index > entries_.size()) {
+    std::cout << "Invalid index!\n";
+    return false;
+  }
+
+  std::string title = entries_[index - 1]->getTitle();
+  entries_.erase(entries_.begin() + index - 1);
+  std::cout << "Entry deleted: " << title << std::endl;
+  return true;
+}
+
 void Vault::clear() {
   entries_.clear();
   std::cout << "Vault cleared. All entries removed." << std::endl;
