@@ -30,3 +30,8 @@ void PasswordEntry::setWebsite(const std::string &website) {
 void PasswordEntry::setUsername(const std::string &username) {
   username_ = username;
 }
+
+std::string PasswordEntry::serialize() const {
+  return "password|" + title_ + "|" + website_ + "|" + username_ + "|" +
+         password_;
+}

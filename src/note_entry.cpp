@@ -15,3 +15,7 @@ void NoteEntry::display() const {
 std::string NoteEntry::getContent() const { return content_; }
 
 void NoteEntry::setContent(const std::string &content) { content_ = content; }
+
+std::string NoteEntry::serialize() const {
+  return "note|" + title_ + "|" + content_;
+}

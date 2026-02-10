@@ -16,6 +16,7 @@ set(SOURCES
     src/note_entry.cpp
     src/vault.cpp
     src/app.cpp
+    src/serializer.cpp
 )
 
 # Исполняемый файл

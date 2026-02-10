@@ -15,6 +15,8 @@ public:
   void setWebsite(const std::string &website);
   void setUsername(const std::string &username);
 
+  std::string serialize() const override;
+
 private:
   std::string website_;
   std::string username_;

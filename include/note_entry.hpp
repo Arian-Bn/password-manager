@@ -12,6 +12,8 @@ public:
 
   void setContent(const std::string &content);
 
+  std::string serialize() const override;
+
 private:
   std::string content_;
 };

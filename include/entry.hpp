@@ -18,6 +18,8 @@ public:
 
   void printBasicInfo() const;
 
+  virtual std::string serialize() const = 0;
+
 protected:
   std::string title_;
   std::string created_time_;
