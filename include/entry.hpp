@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 
 // Abstract base class for all entry types (passwords, notes, etc.)
@@ -19,6 +20,8 @@ public:
   void printBasicInfo() const;
 
   virtual std::string serialize() const = 0;
+
+  static std::unique_ptr<Entry> deserialize(const std::string &data);
 
 protected:
   std::string title_;
