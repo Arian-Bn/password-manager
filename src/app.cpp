@@ -1,3 +1,4 @@
+#include "../include/serializer.hpp"
 #include "../include/vault.hpp"
 #include <iostream>
 #include <limits>
@@ -12,6 +13,8 @@ void printMenu() {
   std::cout << "5. Delete Entry by Index\n";
   std::cout << "6. Clear All Entries\n";
   std::cout << "7. Show Entry Count\n";
+  std::cout << "8. Save to File\n";
+  std::cout << "9. Load from File\n";
   std::cout << "0. Exit\n";
   std::cout << "Choice: ";
 }
@@ -110,7 +113,46 @@ int main() {
       std::cout << "Total entries: " << vault.getEntryCount() << std::endl;
       break;
 
+    case 8: { // Save
+      std::string filename;
+      std::cout << "Filename (default vault.txt): ";
+      std::getline(std::cin, filename);
+      if (filename.empty())
+        filename = "vault.txt";
+
+      if (Serializer::saveToFile(vault, filename)) {
+        std::cout << "Saved successfuly!\n";
+      } else {
+        std::cout << "Save failed\n";
+      }
+      break;
+    }
+
+    case 9: { // Lead
+      std::string filename;
+      std::cout << "Filename (default vault.txt): ";
+      std::getline(std::cin, filename);
+      if (filename.empty())
+        filename = "vault.txt";
+
+      if (Serializer::loadFromFile(vault, filename)) {
+        std::cout << "Loaded siccessfult!\n";
+      } else {
+        std::cout << "Lead failed!\n";
+      }
+      break;
+    }
+
     case 0: // Exit
+      std::cout << "Save befor exit? (y/n):";
+      char saveChoice;
+      std::cin >> saveChoice;
+      ClearInputBuffer();
+
+      if (saveChoice == 'y' || saveChoice == 'Y') {
+        Serializer::saveToFile(vault, "autosave.txt");
+      }
+
       std::cout << "Goodbye!\n";
       break;
 

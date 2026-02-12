@@ -33,9 +33,7 @@ std::unique_ptr<Entry> Entry::deserialize(const std::string &data) {
     std::getline(iss, password);
 
     return std::make_unique<PasswordEntry>(title, website, username, password);
-  }
-
-  if (type == "note") {
+  } else if (type == "note") {
     std::string title, content;
     std::getline(iss, title, '|');
     std::getline(iss, content);

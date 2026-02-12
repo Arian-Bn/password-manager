@@ -24,6 +24,14 @@ public:
 
   void clear();
 
+  const std::vector<std::unique_ptr<Entry>> &getAllEntries() const {
+    return entries_;
+  }
+
+  void addEntry(std::unique_ptr<Entry> entry) {
+    entries_.push_back(std::move(entry));
+  }
+
 private:
   std::vector<std::unique_ptr<Entry>> entries_;
 };

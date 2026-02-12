@@ -4,7 +4,7 @@
 
 class Vault;
 
-class Serialize {
+class Serializer {
 public:
   static bool saveToFile(const Vault &vault, const std::string &filename);
   static bool loadFromFile(Vault &vault, const std::string &filename);
