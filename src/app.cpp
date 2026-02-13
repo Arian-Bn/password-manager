@@ -1,5 +1,6 @@
 #include "../include/serializer.hpp"
 #include "../include/vault.hpp"
+#include <fstream>
 #include <iostream>
 #include <limits>
 #include <string>
@@ -120,6 +121,19 @@ int main() {
       if (filename.empty())
         filename = "vault.txt";
 
+      std::ifstream checkFile(filename);
+      if (checkFile.is_open()) {
+        checkFile.close();
+        std::cout << "File already exists, Overwrite? (y/n): ";
+        char overwrite;
+        std::cin >> overwrite;
+        ClearInputBuffer();
+        if (overwrite != 'y' || overwrite != 'Y') {
+          std::cout << "Save cancelled.\n";
+          break;
+        }
+      }
+
       if (Serializer::saveToFile(vault, filename)) {
         std::cout << "Saved successfuly!\n";
       } else {
@@ -128,7 +142,7 @@ int main() {
       break;
     }
 
-    case 9: { // Lead
+    case 9: { // Load
       std::string filename;
       std::cout << "Filename (default vault.txt): ";
       std::getline(std::cin, filename);
@@ -136,15 +150,15 @@ int main() {
         filename = "vault.txt";
 
       if (Serializer::loadFromFile(vault, filename)) {
-        std::cout << "Loaded siccessfult!\n";
+        std::cout << "Loaded successfully!\n";
       } else {
-        std::cout << "Lead failed!\n";
+        std::cout << "Load failed!\n";
       }
       break;
     }
 
     case 0: // Exit
-      std::cout << "Save befor exit? (y/n):";
+      std::cout << "Save before exit? (y/n):";
       char saveChoice;
       std::cin >> saveChoice;
       ClearInputBuffer();

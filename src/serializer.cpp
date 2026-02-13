@@ -15,8 +15,11 @@ bool Serializer::saveToFile(const Vault &vault, const std::string &filename) {
     return false;
   }
 
-  int count;
-  // ....................
+  int count = 0;
+  for (const auto &entry : vault.getAllEntries()) {
+    file << entry->serialize() << "\n";
+    count++;
+  }
 
   file.close();
   std::cout << "Saved " << count << " entries to " << filename << std::endl;
@@ -41,7 +44,7 @@ bool Serializer::loadFromFile(Vault &vault, const std::string &filename) {
 
     auto entry = deserializeEntry(line);
     if (entry) {
-      // ..........
+      vault.addEntry(std::move(entry));
       count++;
     }
   }

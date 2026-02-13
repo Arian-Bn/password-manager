@@ -4,21 +4,21 @@ A secure password manager built from scratch in C++20, following a disciplined 1
 
 ---
 
-## 📊 Current Status: Week 1 Completed ✅
+## 📊 Current Status: Week 2 Completed ✅
 
-**Week 1 Goal Achieved:** Basic foundation with OOP architecture and console interface.
+**Week 2 Goal Achieved:** File persistence and memory safety.
 
 ### ✅ What's Working Now:
-- **Object-Oriented Architecture**: Abstract `Entry` base class with `PasswordEntry` and `NoteEntry` derivatives
-- **Memory Management**: Using `std::unique_ptr` for automatic resource management
-- **Console Interface**: Full-featured menu system with CRUD operations
-- **Clean Project Structure**: Proper separation of headers and source files
-- **CMake Build System**: Cross-platform compilation support
+- **File Persistence**: Save/load vault to/from text files ✓
+- **Serialization**: Convert entries to/from string format ✓
+- **Memory Safety**: RAII with smart pointers, no leaks ✓
+- **User Interface**: Save/Load menu options with auto-save ✓
+- **Error Handling**: File not found, invalid input ✓
 
-### 🚀 Next Steps (Week 2):
-- File persistence for data storage
-- Memory leak prevention with smart pointers
-- Enhanced error handling
+### 🚀 Next Steps (Week 3):
+- SQLite database integration
+- Data encryption with libsodium
+- Master password protection
 
 ---
 
@@ -38,8 +38,6 @@ A secure password manager built from scratch in C++20, following a disciplined 1
 - `include/` — заголовочные файлы классов
 - `src/` — исходный код
 - `CMakeLists.txt` — конфигурация сборки
-
-Основные классы: `Entry` (абстрактный), `PasswordEntry`, `NoteEntry`, `Vault`.
 
 ---
 
