@@ -1,10 +1,7 @@
 #include "../include/serializer.hpp"
-#include "../include/note_entry.hpp"
-#include "../include/password_entry.hpp"
 #include "../include/vault.hpp"
 #include <fstream>
 #include <iostream>
-#include <sstream>
 
 bool Serializer::saveToFile(const Vault &vault, const std::string &filename) {
   std::ofstream file(filename);
@@ -52,10 +49,6 @@ bool Serializer::loadFromFile(Vault &vault, const std::string &filename) {
   file.close();
   std::cout << "Loaded " << count << " entries from " << filename << std::endl;
   return true;
-}
-
-std::string Serializer::serializeEntry(const Entry &entry) {
-  return entry.serialize();
 }
 
 std::unique_ptr<Entry> Serializer::deserializeEntry(const std::string &line) {
