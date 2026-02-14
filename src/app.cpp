@@ -98,7 +98,7 @@ int main() {
       ClearInputBuffer();
 
       if (vault.deleteEntry(index)) {
-        std::cout << "Entry deleted!\n";
+        std::cout << "Entry deleted successfully!\n";
       } else {
         std::cout << "Invalid index!\n";
       }
