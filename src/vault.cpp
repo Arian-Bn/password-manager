@@ -57,7 +57,7 @@ void Vault::findByTitle(const std::string &title) const {
 }
 
 bool Vault::deleteEntry(size_t index) {
-  if (index == 0 || index > entries_.size()) {
+  if (index <= 0 || index > entries_.size()) {
     return false;
   }
 
