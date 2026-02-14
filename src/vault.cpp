@@ -61,7 +61,6 @@ bool Vault::deleteEntry(size_t index) {
     return false;
   }
 
-  std::string title = entries_[index - 1]->getTitle();
   entries_.erase(entries_.begin() + index - 1);
   return true;
 }
