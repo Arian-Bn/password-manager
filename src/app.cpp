@@ -97,12 +97,11 @@ int main() {
       std::cin >> index;
       ClearInputBuffer();
 
-      if (index >= 1 && index <= vault.getEntryCount()) {
-        vault.deleteEntry(index);
+      if (vault.deleteEntry(index)) {
+        std::cout << "Entry deleted!\n";
       } else {
         std::cout << "Invalid index!\n";
       }
-
       break;
     }
 
@@ -128,7 +127,7 @@ int main() {
         char overwrite;
         std::cin >> overwrite;
         ClearInputBuffer();
-        if (overwrite != 'y' || overwrite != 'Y') {
+        if (overwrite != 'y' && overwrite != 'Y') {
           std::cout << "Save cancelled.\n";
           break;
         }
