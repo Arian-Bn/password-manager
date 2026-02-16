@@ -17,7 +17,8 @@ set(SOURCES
     src/vault.cpp
     src/app.cpp
     src/serializer.cpp
-    #test/test_serialize.cpp
+    #test/test_serialize.cpp\
+    src/database.cpp
 )
 
 # Исполняемый файл
