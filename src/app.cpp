@@ -1,3 +1,4 @@
+#include "../include/database_manager.hpp"
 #include "../include/serializer.hpp"
 #include "../include/vault.hpp"
 #include <fstream>
@@ -27,6 +28,14 @@ void ClearInputBuffer() {
 
 int main() {
   Vault vault;
+
+  DatabaseManager db("vault.db");
+  if (!db.initialize()) {
+    std::cerr << "Failed to initialize database.\n"
+                 "End program.\n";
+    return 1;
+  }
+
   int choice = -1;
 
   std::cout << "Welcome to Password Manager!\n";
