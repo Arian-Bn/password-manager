@@ -50,7 +50,6 @@ core
 
 # Dependencies
 deps/
-third_party/
 
 # Password manager specific
 *.db
