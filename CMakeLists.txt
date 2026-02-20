@@ -7,6 +7,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party/SQLiteCpp/include)
+
 set(SQLITECPP_PATH ${CMAKE_CURRENT_SOURCE_DIR}/third_party/SQLiteCpp)
 
 include_directories(${SQLITECPP_PATH}/include)
@@ -27,8 +29,8 @@ set(SOURCES
 add_executable(password_manager ${SOURCES})
 
 target_link_libraries(password_manager PRIVATE 
-  SQLiteCpp
     sqlite3
+    SQLiteCpp
 )
 
 if(MSVC)
