@@ -18,6 +18,7 @@ Release/
 x64/
 x86/
 CMakeFiles/
+.cache/
 
 # IDE files
 .vscode/
