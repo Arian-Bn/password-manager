@@ -1,40 +1,23 @@
-#include "../include/database_manager.hpp"
+#include "database_manager.hpp"
 #include <iostream>
-#include <sqlite3.h>
 
 DatabaseManager::DatabaseManager(const std::string &path)
-    : db_(nullptr), db_path_(path) {}
-
-DatabaseManager::~DatabaseManager() {
-  if (db_)
-    sqlite3_close(db_);
+    : db_(path.c_str(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE),
+      db_path_(path) {
+  std::cout << "Database opened: " << path << std::endl;
 }
 
 bool DatabaseManager::initialize() {
-  int rc = sqlite3_open(db_path_.c_str(), &db_);
-
-  if (rc != SQLITE_OK) {
-    std::cout << "Cannot open database: " << sqlite3_errmsg(db_) << std::endl;
-    sqlite3_close(db_);
+  try {
+    db_.exec("CREATE TABLE IF NOT EXISTS entries ("
+             "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+             "type TEXT NOT NULL,"
+             "title TEXT NOT NULL,"
+             "content_data TEXT);");
+    std::cout << "Table 'entries' ready" << std::endl;
+    return true;
+  } catch (const std::exception &e) {
+    std::cerr << "SQL error: " << e.what() << std::endl;
     return false;
   }
-  std::cout << "opened database successfully: " << db_path_ << std::endl;
-
-  std::string sql = "CREATE TABLE IF NOT EXISTS entries ("
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    "type TEXT NOT NULL,"
-                    "title TEXT NOT NULL,"
-                    "content_data TEXT);";
-
-  char *errMsg = nullptr;
-  rc = sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, &errMsg);
-
-  if (rc != SQLITE_OK) {
-    std::cout << "SQL error: " << errMsg << std::endl;
-    sqlite3_free(errMsg);
-    return false;
-  }
-
-  std::cout << "Table 'entries' created or alreade exists." << std::endl;
-  return true;
 }
