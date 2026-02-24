@@ -21,3 +21,14 @@ bool DatabaseManager::initialize() {
     return false;
   }
 }
+
+bool DatabaseManager::executeQuery(const std::string &query) {
+  try {
+    db_.exec(query);
+    std::cout << "Query executed: " << query << std::endl;
+    return true;
+  } catch (const std::exception &e) {
+    std::cout << "Query failed: " << e.what() << std::endl;
+    return false;
+  }
+}
