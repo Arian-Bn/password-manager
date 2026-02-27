@@ -15,7 +15,7 @@ private:
   std::unique_ptr<SQLite::Statement> test_stmt_;
 
   // SQL constants
-  static const std::string CREATE_ENTRIES_TABLES;
-  static const std::string CREATE_PASSWORDS_TABLES;
-  static const std::string CREATE_NOTES_TABLES;
+  static const std::string CREATE_ENTRIES_TABLE;
+  static const std::string CREATE_PASSWORDS_TABLE;
+  static const std::string CREATE_NOTES_TABLE;
 };
