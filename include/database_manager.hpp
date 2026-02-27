@@ -13,4 +13,9 @@ private:
   SQLite::Database db_;
   std::string db_path_;
   std::unique_ptr<SQLite::Statement> test_stmt_;
+
+  // SQL constants
+  static const std::string CREATE_ENTRIES_TABLES;
+  static const std::string CREATE_PASSWORDS_TABLES;
+  static const std::string CREATE_NOTES_TABLES;
 };
