@@ -25,6 +25,10 @@ private:
   std::string db_path_;
   std::unique_ptr<SQLite::Statement> test_stmt_;
 
+  std::unique_ptr<SQLite::Statement> insert_entry_stmt_;
+  std::unique_ptr<SQLite::Statement> insert_password_stmt_;
+  std::unique_ptr<SQLite::Statement> insert_note_stmt_;
+
   // SQL constants
   static const std::string CREATE_ENTRIES_TABLE;
   static const std::string CREATE_PASSWORDS_TABLE;
