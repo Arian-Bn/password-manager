@@ -59,3 +59,26 @@ bool DatabaseManager::executeQuery(const std::string &query) {
     return false;
   }
 }
+int DatabaseManager::addEntry(const std::string &type,
+                              const std::string &title) {
+  try {
+    if (!insert_entry_stmt_) {
+      insert_entry_stmt_ = std::make_unique<SQLite::Statement>(
+          db_, "INSERT INTO entries (type, title) VALUES (?, ?)");
+    }
+
+    insert_entry_stmt_->bind(1, type);
+    insert_entry_stmt_->bind(2, title);
+    insert_entry_stmt_->exec();
+
+    int newId = db_.getLastInsertRowid();
+
+    insert_entry_stmt_->reset();
+    std::cout << "Entry added with ID: " << newId << std::endl;
+    return newId;
+
+  } catch (const std::exception &e) {
+    std::cerr << "Failed to add entry: " << e.what() << std::endl;
+    return -1;
+  }
+}
