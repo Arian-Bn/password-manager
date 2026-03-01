@@ -6,8 +6,19 @@
 class DatabaseManager {
 public:
   DatabaseManager(const std::string &db_path);
+
   bool initialize();
   bool executeQuery(const std::string &query);
+
+  int addEntry(const std::string &type, const std::string &title);
+  void addPasswordDetails(int entryId, const std::string &website,
+                          const std::string &username,
+                          const std::string &encPassword);
+  void addNoteDetails(int entryId, const std::string &content);
+
+  void beginTransaction();
+  void commitTransaction();
+  void rollbackTransaction();
 
 private:
   SQLite::Database db_;
