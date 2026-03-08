@@ -1,5 +1,7 @@
 #include "database_manager.hpp"
+#include <exception>
 #include <iostream>
+#include <memory>
 
 const std::string DatabaseManager::CREATE_ENTRIES_TABLE =
     "CREATE TABLE IF NOT EXISTS entries ("
@@ -80,5 +82,31 @@ int DatabaseManager::addEntry(const std::string &type,
   } catch (const std::exception &e) {
     std::cerr << "Failed to add entry: " << e.what() << std::endl;
     return -1;
+  }
+}
+
+void DatabaseManager::addPasswordDetails(int entryId,
+                                         const std::string &website,
+                                         const std::string &username,
+                                         const std::string &encPassword) {
+  try {
+    if (!insert_password_stmt_) {
+      insert_password_stmt_ = std::make_unique<SQLite::Statement>(
+          db_, "INSERT INTO passwords (id, website, username, "
+               "encrypted_Password) VALUES (?, ?, ?, ?)");
+    }
+
+    insert_password_stmt_->bind(1, entryId);
+    insert_password_stmt_->bind(2, website);
+    insert_password_stmt_->bind(3, username);
+    insert_password_stmt_->bind(4, encPassword);
+    insert_password_stmt_->exec();
+
+    int newId = db_.getLastInsertRowid();
+
+    insert_password_stmt_->reset();
+    std::cout << "Entry added with ID: " << newId << std::endl;
+  } catch (const std::exception &e) {
+    std::cerr << "Failed to add entry: " << e.what() << std::endl;
   }
 }
