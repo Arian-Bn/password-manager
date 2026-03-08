@@ -93,7 +93,7 @@ void DatabaseManager::addPasswordDetails(int entryId,
     if (!insert_password_stmt_) {
       insert_password_stmt_ = std::make_unique<SQLite::Statement>(
           db_, "INSERT INTO passwords (id, website, username, "
-               "encrypted_Password) VALUES (?, ?, ?, ?)");
+               "encrypted_password) VALUES (?, ?, ?, ?)");
     }
 
     insert_password_stmt_->bind(1, entryId);
@@ -102,10 +102,24 @@ void DatabaseManager::addPasswordDetails(int entryId,
     insert_password_stmt_->bind(4, encPassword);
     insert_password_stmt_->exec();
 
-    int newId = db_.getLastInsertRowid();
-
     insert_password_stmt_->reset();
-    std::cout << "Entry added with ID: " << newId << std::endl;
+  } catch (const std::exception &e) {
+    std::cerr << "Failed to add entry: " << e.what() << std::endl;
+  }
+}
+
+void DatabaseManager::addNoteDetails(int entryId, const std::string &content) {
+  try {
+    if (!insert_note_stmt_) {
+      insert_note_stmt_ = std::make_unique<SQLite::Statement>(
+          db_, "INSERT INTO notes (id, content) VALUES (?, ?)");
+    }
+
+    insert_note_stmt_->bind(1, entryId);
+    insert_note_stmt_->bind(2, content);
+    insert_note_stmt_->exec();
+
+    insert_note_stmt_->reset();
   } catch (const std::exception &e) {
     std::cerr << "Failed to add entry: " << e.what() << std::endl;
   }
