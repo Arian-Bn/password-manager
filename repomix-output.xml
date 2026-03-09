@@ -1,0 +1,1079 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: **/third_party/**
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+include/
+  database_manager.hpp
+  entry.hpp
+  note_entry.hpp
+  password_entry.hpp
+  serializer.hpp
+  vault.hpp
+src/
+  app.cpp
+  database_manager.cpp
+  entry.cpp
+  note_entry.cpp
+  password_entry.cpp
+  serializer.cpp
+  vault.cpp
+test/
+  test_serialize.cpp
+.gitignore
+.gitmodules
+CMakeLists.txt
+README.md
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="test/test_serialize.cpp">
+#include "../include/entry.hpp"
+#include "../include/note_entry.hpp"
+#include "../include/password_entry.hpp"
+#include <iostream>
+
+int main() {
+  // Test PasswordEntry
+  PasswordEntry pass("Email", "gmail.com", "user", "pass123");
+  std::string pass_str = pass.serialize();
+  std::cout << "Serialized PasswordEntry: " << pass_str << std::endl;
+
+  auto pass2 = Entry::deserialize(pass_str);
+  if (pass2) {
+    std::cout << "Deserialized successfully!" << std::endl;
+    pass2->display();
+  }
+
+  NoteEntry note("Shopping", "Milk, Eggs");
+  std::string note_string = note.serialize();
+  std::cout << "Serialized NoteEntry: " << note_string << std::endl;
+
+  auto note2 = Entry::deserialize(note_string);
+  if (note2) {
+    std::cout << "Deserialized successfully: " << std::endl;
+    note2->display();
+  }
+  return 0;
+}
+</file>
+
+<file path=".gitmodules">
+[submodule "third_party/SQLiteCpp"]
+	path = third_party/SQLiteCpp
+	url = https://github.com/SRombauts/SQLiteCpp.git
+</file>
+
+<file path="include/note_entry.hpp">
+#pragma once
+#include "entry.hpp"
+#include <string>
+
+class NoteEntry : public Entry {
+public:
+  NoteEntry(const std::string &title, const std::string &content_);
+
+  void display() const override;
+
+  std::string getContent() const;
+
+  void setContent(const std::string &content);
+
+  std::string serialize() const override;
+
+private:
+  std::string content_;
+};
+</file>
+
+<file path="include/password_entry.hpp">
+#pragma once
+#include "entry.hpp"
+#include <string>
+
+class PasswordEntry : public Entry {
+public:
+  PasswordEntry(const std::string &title, const std::string &website,
+                const std::string &username, const std::string &password);
+
+  void display() const override;
+
+  std::string getWebsite() const;
+  std::string getUsername() const;
+
+  void setWebsite(const std::string &website);
+  void setUsername(const std::string &username);
+
+  std::string serialize() const override;
+
+private:
+  std::string website_;
+  std::string username_;
+  std::string password_;
+};
+</file>
+
+<file path="src/note_entry.cpp">
+#include "../include/note_entry.hpp"
+#include <iostream>
+
+NoteEntry::NoteEntry(const std::string &title, const std::string &content)
+    : Entry(title), content_(content) {
+  std::cout << "NoteEntry created: " << title << std::endl;
+}
+
+void NoteEntry::display() const {
+  Entry::printBasicInfo();
+  std::cout << "Type: Note" << std::endl;
+  std::cout << "Content: " << content_ << std::endl;
+}
+
+std::string NoteEntry::getContent() const { return content_; }
+
+void NoteEntry::setContent(const std::string &content) { content_ = content; }
+
+std::string NoteEntry::serialize() const {
+  return "note|" + title_ + "|" + content_;
+}
+</file>
+
+<file path="src/password_entry.cpp">
+#include "../include/password_entry.hpp"
+#include <iostream>
+
+PasswordEntry::PasswordEntry(const std::string &title,
+                             const std::string &website,
+                             const std::string &username,
+                             const std::string &password)
+    : Entry(title), website_(website), username_(username),
+      password_(password) {
+  std::cout << "PasswordEntry created: " << title << std::endl;
+}
+
+void PasswordEntry::display() const {
+  printBasicInfo();
+
+  std::cout << "Type: Password" << std::endl;
+  std::cout << "Website: " << website_ << std::endl;
+  std::cout << "Username: " << username_ << std::endl;
+  std::cout << "Password: " << password_ << std::endl;
+}
+
+std::string PasswordEntry::getWebsite() const { return website_; }
+
+std::string PasswordEntry::getUsername() const { return username_; }
+
+void PasswordEntry::setWebsite(const std::string &website) {
+  website_ = website;
+}
+
+void PasswordEntry::setUsername(const std::string &username) {
+  username_ = username;
+}
+
+std::string PasswordEntry::serialize() const {
+  return "password|" + title_ + "|" + website_ + "|" + username_ + "|" +
+         password_;
+}
+</file>
+
+<file path="include/entry.hpp">
+#pragma once
+#include <memory>
+#include <string>
+
+// Abstract base class for all entry types (passwords, notes, etc.)
+class Entry {
+public:
+  Entry(const std::string &title);
+
+  // Virtual destructor for pplymorphic deletion
+  virtual ~Entry() = default;
+
+  // Pure virtual - each entry type implements its own display
+  virtual void display() const = 0;
+
+  std::string getTitle() const;
+
+  void setTitle(const std::string &new_title);
+
+  void printBasicInfo() const;
+
+  virtual std::string serialize() const = 0;
+
+  static std::unique_ptr<Entry> deserialize(const std::string &data);
+
+protected:
+  std::string title_;
+  std::string created_time_;
+
+private:
+  // Helper: returns current timestamp as string
+  std::string getCurrentTimestamp() const;
+};
+</file>
+
+<file path="include/serializer.hpp">
+#pragma once
+#include "vault.hpp"
+#include <string>
+
+class Vault;
+
+class Serializer {
+public:
+  static bool saveToFile(const Vault &vault, const std::string &filename);
+  static bool loadFromFile(Vault &vault, const std::string &filename);
+
+private:
+  static std::unique_ptr<class Entry> deserializeEntry(const std::string &line);
+};
+</file>
+
+<file path="src/entry.cpp">
+#include "../include/entry.hpp"
+#include "../include/note_entry.hpp"
+#include "../include/password_entry.hpp"
+#include <iostream>
+#include <sstream>
+
+Entry::Entry(const std::string &title)
+    : title_(title), created_time_("2026-02-01 00:00:00") {
+  std::cout << "Entry created: " << title_ << std::endl;
+}
+
+std::string Entry::getTitle() const { return title_; }
+
+void Entry::setTitle(const std::string &new_title) { title_ = new_title; }
+
+void Entry::printBasicInfo() const {
+  std::cout << "Title: " << title_ << "\nCreated: " << created_time_
+            << std::endl;
+}
+
+std::string Entry::getCurrentTimestamp() const { return "2026-02-07 00:00:00"; }
+
+std::unique_ptr<Entry> Entry::deserialize(const std::string &data) {
+  std::istringstream iss(data);
+  std::string type;
+  std::getline(iss, type, '|');
+
+  if (type == "password") {
+    std::string title, website, username, password;
+    std::getline(iss, title, '|');
+    std::getline(iss, website, '|');
+    std::getline(iss, username, '|');
+    std::getline(iss, password);
+
+    return std::make_unique<PasswordEntry>(title, website, username, password);
+  } else if (type == "note") {
+    std::string title, content;
+    std::getline(iss, title, '|');
+    std::getline(iss, content);
+
+    return std::make_unique<NoteEntry>(title, content);
+  }
+
+  return nullptr;
+}
+</file>
+
+<file path="include/vault.hpp">
+#pragma once
+#include "entry.hpp"
+#include <memory>
+#include <string>
+#include <vector>
+
+class Vault {
+public:
+  Vault() = default;
+  ~Vault() = default;
+
+  void addPasswordEntry(const std::string &title, const std::string &website,
+                        const std::string &username,
+                        const std::string &password);
+  void addNoteEntry(const std::string &title, const std::string &content);
+
+  void displayAll() const;
+
+  void findByTitle(const std::string &title) const;
+
+  size_t getEntryCount() const { return entries_.size(); }
+
+  bool deleteEntry(size_t index);
+
+  void clear();
+
+  const std::vector<std::unique_ptr<Entry>> &getAllEntries() const {
+    return entries_;
+  }
+
+  void addEntry(std::unique_ptr<Entry> entry) {
+    entries_.push_back(std::move(entry));
+  }
+
+private:
+  std::vector<std::unique_ptr<Entry>> entries_;
+};
+</file>
+
+<file path="src/serializer.cpp">
+#include "../include/serializer.hpp"
+#include "../include/vault.hpp"
+#include <fstream>
+#include <iostream>
+
+bool Serializer::saveToFile(const Vault &vault, const std::string &filename) {
+  std::ofstream file(filename);
+
+  if (!file.is_open()) {
+    std::cout << "ERROR: Cannot open file for writing: " << filename
+              << std::endl;
+    return false;
+  }
+
+  int count = 0;
+  for (const auto &entry : vault.getAllEntries()) {
+    file << entry->serialize() << "\n";
+    count++;
+  }
+
+  file.close();
+  std::cout << "Saved " << count << " entries to " << filename << std::endl;
+  return true;
+}
+
+bool Serializer::loadFromFile(Vault &vault, const std::string &filename) {
+  std::ifstream file(filename);
+  if (!file.is_open()) {
+    std::cout << "ERROR: Cannot open file or for reading: " << filename
+              << std::endl;
+    return false;
+  }
+
+  vault.clear();
+
+  std::string line;
+  int count = 0;
+  while (std::getline(file, line)) {
+    if (line.empty())
+      continue;
+
+    auto entry = deserializeEntry(line);
+    if (entry) {
+      vault.addEntry(std::move(entry));
+      count++;
+    }
+  }
+
+  file.close();
+  std::cout << "Loaded " << count << " entries from " << filename << std::endl;
+  return true;
+}
+
+std::unique_ptr<Entry> Serializer::deserializeEntry(const std::string &line) {
+  return Entry::deserialize(line);
+}
+</file>
+
+<file path="README.md">
+# 🔐 C++ Password Manager
+
+A secure password manager built from scratch in C++20, following a disciplined 14-week development plan. This project demonstrates professional C++ development practices, modern architecture, and security principles.
+
+---
+
+## 📊 Current Status: Week 2 Completed ✅
+
+**Week 2 Goal Achieved:** File persistence and memory safety.
+
+### ✅ What's Working Now:
+- **File Persistence**: Save/load vault to/from text files ✓
+- **Serialization**: Convert entries to/from string format ✓
+- **Memory Safety**: RAII with smart pointers, no leaks ✓
+- **User Interface**: Save/Load menu options with auto-save ✓
+- **Error Handling**: File not found, invalid input ✓
+
+### 🚀 Next Steps (Week 3):
+- SQLite database integration
+- Data encryption with libsodium
+- Master password protection
+
+---
+
+## 🛠️ Technologies Used
+
+- **C++20** - Modern C++ with latest features
+- **CMake 3.16+** - Cross-platform build system
+- **Git** - Version control with daily commits
+- **Object-Oriented Design** - Polymorphism, encapsulation, inheritance
+- **RAII Principles** - Resource management through object lifetimes
+
+---
+
+## 📁 Project Structure
+
+Проект организован по классической схеме:
+- `include/` — заголовочные файлы классов
+- `src/` — исходный код
+- `CMakeLists.txt` — конфигурация сборки
+
+---
+
+## 🚀 Build & Run
+
+### Prerequisites
+- C++20 compatible compiler (GCC 10+, Clang 12+, MSVC 2019+)
+- CMake 3.16+
+
+### Build Instructions
+```bash
+# Clone repository
+git clone <repository-url>
+cd password-manager
+
+# Configure and build
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --parallel
+
+# Run application
+./password_manager
+</file>
+
+<file path="src/vault.cpp">
+#include "../include/vault.hpp"
+#include "../include/note_entry.hpp"
+#include "../include/password_entry.hpp"
+#include <iostream>
+
+void Vault::addPasswordEntry(const std::string &title,
+                             const std::string &website,
+                             const std::string &username,
+                             const std::string &password) {
+  entries_.push_back(
+      std::make_unique<PasswordEntry>(title, website, username, password));
+
+  std::cout << "Password entry added: " << title << std::endl;
+}
+
+void Vault::addNoteEntry(const std::string &title, const std::string &content) {
+  entries_.push_back(std::make_unique<NoteEntry>(title, content));
+  std::cout << "Note entry added: " << title << std::endl;
+}
+
+void Vault::displayAll() const {
+  if (entries_.empty()) {
+    std::cout << "\nVault is empty. Add some entries first!\n" << std::endl;
+    return;
+  }
+
+  std::cout << "\n=== VAULT CONTENTS (" << entries_.size()
+            << ") ===" << std::endl;
+  for (size_t i = 0; i < entries_.size(); i++) {
+    std::cout << "[" << i + 1 << "] ";
+    entries_[i]->display();
+    if (i != entries_.size() - 1) {
+      std::cout << "---" << std::endl;
+    }
+  }
+  std::cout << "\n=== END OF VAULT ===\n" << std::endl;
+}
+
+void Vault::findByTitle(const std::string &title) const {
+  bool found = false;
+
+  for (const auto &entry : entries_) {
+    if (entry->getTitle().find(title) != std::string::npos) {
+      if (!found) {
+        std::cout << "\nSearch results for \"" << title << "\":" << std::endl;
+        found = true;
+      }
+      entry->display();
+      std::cout << "---" << std::endl;
+    }
+  }
+
+  if (!found) {
+    std::cout << "No entries found with title containing: " << title
+              << std::endl;
+  }
+}
+
+bool Vault::deleteEntry(size_t index) {
+  if (index <= 0 || index > entries_.size()) {
+    return false;
+  }
+
+  entries_.erase(entries_.begin() + index - 1);
+  return true;
+}
+
+void Vault::clear() {
+  entries_.clear();
+  std::cout << "Vault cleared. All entries removed." << std::endl;
+}
+</file>
+
+<file path=".gitignore">
+# C++ Compiled files
+program
+*.o
+*.obj
+*.out
+*.exe
+*.so
+*.dll
+*.a
+*.lib
+*.dylib
+
+# Build directories
+build/
+bin/
+Debug/
+Release/
+x64/
+x86/
+CMakeFiles/
+.cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.code-workspace
+
+# CMake
+CMakeCache.txt
+CMakeUserPresets.json
+compile_commands.json
+cmake_install.cmake
+Makefile
+
+# Qt
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+*.pro.user
+*.autosave
+
+# macOS
+.DS_Store
+*.dSYM/
+
+# Linux/Unix core dumps
+core
+*.core
+
+# Dependencies
+deps/
+
+# Password manager specific
+*.db
+*.sqlite
+config.ini
+secrets.dat
+
+# Temporary files
+*.tmp
+*.temp
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+logs/
+
+# Coverage reports
+coverage/
+*.gcda
+*.gcno
+
+# Generated documentation
+docs/html/
+docs/latex/
+
+# Package files
+*.tar.gz
+*.zip
+
+-files --others --exclude-standard
+</file>
+
+<file path="src/app.cpp">
+#include "../include/database_manager.hpp"
+#include "../include/serializer.hpp"
+#include "../include/vault.hpp"
+#include <fstream>
+#include <iostream>
+#include <limits>
+#include <string>
+
+void printMenu() {
+  std::cout << "\n=== PASSWORD MANAGER ===\n";
+  std::cout << "1. Add Password Entry\n";
+  std::cout << "2. Add Note Entry\n";
+  std::cout << "3. View All Entries\n";
+  std::cout << "4. Search by Title\n";
+  std::cout << "5. Delete Entry by Index\n";
+  std::cout << "6. Clear All Entries\n";
+  std::cout << "7. Show Entry Count\n";
+  std::cout << "8. Save to File\n";
+  std::cout << "9. Load from File\n";
+  std::cout << "0. Exit\n";
+  std::cout << "Choice: ";
+}
+
+void ClearInputBuffer() {
+  std::cin.clear();
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+int main() {
+  Vault vault;
+
+  DatabaseManager db("vault.db");
+  if (!db.initialize()) {
+    std::cerr << "Failed to initialize database.\n"
+                 "End program.\n";
+    return 1;
+  }
+
+  int choice = -1;
+
+  std::cout << "Welcome to Password Manager!\n";
+
+  while (choice != 0) {
+    printMenu();
+    std::cin >> choice;
+    ClearInputBuffer();
+
+    switch (choice) {
+    case 1: { // Add Password
+      std::string title, website, username, password;
+
+      std::cout << "Title: ";
+      std::getline(std::cin, title);
+
+      std::cout << "Website: ";
+      std::getline(std::cin, website);
+
+      std::cout << "Username: ";
+      std::getline(std::cin, username);
+
+      std::cout << "Password: ";
+      std::getline(std::cin, password);
+
+      vault.addPasswordEntry(title, website, username, password);
+      break;
+    }
+
+    case 2: { // Add Note
+      std::string title, content;
+
+      std::cout << "Title: ";
+      std::getline(std::cin, title);
+
+      std::cout << "Content: ";
+      std::getline(std::cin, content);
+
+      vault.addNoteEntry(title, content);
+      break;
+    }
+
+    case 3: { // View All
+      vault.displayAll();
+      break;
+    }
+
+    case 4: { // Search
+      std::string searchTerm;
+
+      std::cout << "Search term: ";
+      std::getline(std::cin, searchTerm);
+
+      vault.findByTitle(searchTerm);
+      break;
+    }
+
+    case 5: { // Delete by Index
+      vault.displayAll();
+
+      if (vault.getEntryCount() == 0) {
+        break;
+      }
+
+      std::cout << "Enter entry number to delete (1 - " << vault.getEntryCount()
+                << "): ";
+      size_t index;
+      std::cin >> index;
+      ClearInputBuffer();
+
+      if (vault.deleteEntry(index)) {
+        std::cout << "Entry deleted successfully!\n";
+      } else {
+        std::cout << "Invalid index!\n";
+      }
+      break;
+    }
+
+    case 6: // Clear All
+      vault.clear();
+      break;
+
+    case 7: // Count
+      std::cout << "Total entries: " << vault.getEntryCount() << std::endl;
+      break;
+
+    case 8: { // Save
+      std::string filename;
+      std::cout << "Filename (default vault.txt): ";
+      std::getline(std::cin, filename);
+      if (filename.empty())
+        filename = "vault.txt";
+
+      std::ifstream checkFile(filename);
+      if (checkFile.is_open()) {
+        checkFile.close();
+        std::cout << "File already exists, Overwrite? (y/n): ";
+        char overwrite;
+        std::cin >> overwrite;
+        ClearInputBuffer();
+        if (overwrite != 'y' && overwrite != 'Y') {
+          std::cout << "Save cancelled.\n";
+          break;
+        }
+      }
+
+      if (Serializer::saveToFile(vault, filename)) {
+        std::cout << "Saved successfuly!\n";
+      } else {
+        std::cout << "Save failed\n";
+      }
+      break;
+    }
+
+    case 9: { // Load
+      std::string filename;
+      std::cout << "Filename (default vault.txt): ";
+      std::getline(std::cin, filename);
+      if (filename.empty())
+        filename = "vault.txt";
+
+      if (Serializer::loadFromFile(vault, filename)) {
+        std::cout << "Loaded successfully!\n";
+      } else {
+        std::cout << "Load failed!\n";
+      }
+      break;
+    }
+
+    case 0: // Exit
+      std::cout << "Save before exit? (y/n):";
+      char saveChoice;
+      std::cin >> saveChoice;
+      ClearInputBuffer();
+
+      if (saveChoice == 'y' || saveChoice == 'Y') {
+        Serializer::saveToFile(vault, "autosave.txt");
+      }
+
+      std::cout << "Goodbye!\n";
+      break;
+
+    default:
+      std::cout << "Invalid choice. Try again.\n";
+    }
+  }
+
+  return 0;
+}
+</file>
+
+<file path="src/database_manager.cpp">
+#include "database_manager.hpp"
+#include <SQLiteCpp/Statement.h>
+#include <exception>
+#include <iostream>
+
+const std::string DatabaseManager::CREATE_ENTRIES_TABLE =
+    "CREATE TABLE IF NOT EXISTS entries ("
+    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "type TEXT NOT NULL CHECK(type IN ('password', 'note')),"
+    "title TEXT NOT NULL,"
+    "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+    ");";
+
+const std::string DatabaseManager::CREATE_PASSWORDS_TABLE =
+    "CREATE TABLE IF NOT EXISTS passwords ("
+    "id INTEGER PRIMARY KEY,"
+    "website TEXT NOT NULL,"
+    "username TEXT NOT NULL,"
+    "encrypted_password TEXT NOT NULL,"
+    "FOREIGN KEY(id) REFERENCES entries(id) ON DELETE CASCADE"
+    ");";
+
+const std::string DatabaseManager::CREATE_NOTES_TABLE =
+    "CREATE TABLE IF NOT EXISTS notes ("
+    "id INTEGER PRIMARY KEY,"
+    "content TEXT NOT NULL,"
+    "FOREIGN KEY(id) REFERENCES entries(id) ON DELETE CASCADE"
+    ");";
+
+DatabaseManager::DatabaseManager(const std::string &path)
+    : db_(path.c_str(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE),
+      db_path_(path) {
+  std::cout << "Database opened: " << path << std::endl;
+}
+
+bool DatabaseManager::initialize() {
+  try {
+    db_.exec(CREATE_ENTRIES_TABLE);
+    db_.exec(CREATE_PASSWORDS_TABLE);
+    db_.exec(CREATE_NOTES_TABLE);
+
+    std::cout << "All tables created successfully" << std::endl;
+    std::cout << " - entries table ready" << std::endl;
+    std::cout << " - passwords table ready" << std::endl;
+    std::cout << " - notes table ready" << std::endl;
+    return true;
+
+  } catch (const std::exception &e) {
+    std::cerr << "SQL error: " << e.what() << std::endl;
+    return false;
+  }
+}
+
+bool DatabaseManager::executeQuery(const std::string &query) {
+  try {
+    db_.exec(query);
+    std::cout << "Query executed: " << query << std::endl;
+    return true;
+  } catch (const std::exception &e) {
+    std::cout << "Query failed: " << e.what() << std::endl;
+    return false;
+  }
+}
+
+bool DatabaseManager::addPasswordEntry(const std::string &title,
+                                       const std::string &website,
+                                       const std::string &username,
+                                       const std::string &encrypted_password) {
+  try {
+    db_.exec("BEGIN TRANSACTION");
+    SQLite::Statement insertEntry(
+        db_, "INSERT INTO entries (type, title) VALUES (?, ?)");
+    insertEntry.bind(1, "password");
+    insertEntry.bind(2, title);
+    insertEntry.exec();
+
+    int entryId = db_.getLastInsertRowid();
+
+    SQLite::Statement insertPass(
+        db_, "INSERT INTO passwords (id, website, username, "
+             "encrypted_password) VALUES (?, ?, ?, ?)");
+    insertPass.bind(1, entryId);
+    insertPass.bind(2, website);
+    insertPass.bind(3, username);
+    insertPass.bind(4, encrypted_password);
+    insertPass.exec();
+
+    db_.exec("COMMIT");
+    std::cout << "Password entry added with ID: " << entryId << std::endl;
+    return true;
+
+  } catch (const std::exception &e) {
+    db_.exec("ROLLBACK");
+    std::cerr << "Failed to add entry: " << e.what() << std::endl;
+    return false;
+  }
+}
+
+bool DatabaseManager::addNoteEntry(const std::string &title,
+                                   const std::string &content) {
+  try {
+    db_.exec("BEGIN TRANSACTION");
+
+    SQLite::Statement insertEntry(
+        db_, "INSERT INTO entries (type, title) VALUES (?, ?)");
+    insertEntry.bind(1, "note");
+    insertEntry.bind(2, title);
+    insertEntry.exec();
+
+    int entryId = db_.getLastInsertRowid();
+
+    SQLite::Statement insertNote(
+        db_, "INSERT INTO notes (id, content) VALUES (?, ?)");
+    insertNote.bind(1, entryId);
+    insertNote.bind(2, content);
+    insertNote.exec();
+
+    db_.exec("COMMIT");
+    std::cout << "Note entry added with ID: " << entryId << std::endl;
+    return true;
+  } catch (const std::exception &e) {
+    db_.exec("ROLLBACK");
+    std::cerr << "Failed to add entry: " << e.what() << std::endl;
+    return false;
+  }
+}
+</file>
+
+<file path="include/database_manager.hpp">
+#pragma once
+#include <SQLiteCpp/Database.h>
+#include <memory>
+#include <string>
+
+class DatabaseManager {
+public:
+  DatabaseManager(const std::string &db_path);
+  bool initialize();
+  bool executeQuery(const std::string &query);
+
+  bool addPasswordEntry(const std::string &title, const std::string &website,
+                        const std::string &username,
+                        const std::string &encrypted_password);
+  bool addNoteEntry(const std::string &title, const std::string &content);
+
+  void beginTransaction();
+  void commitTransaction();
+  void rollbackTransaction();
+
+private:
+  SQLite::Database db_;
+  std::string db_path_;
+  std::unique_ptr<SQLite::Statement> test_stmt_;
+
+  // SQL constants
+  static const std::string CREATE_ENTRIES_TABLE;
+  static const std::string CREATE_PASSWORDS_TABLE;
+  static const std::string CREATE_NOTES_TABLE;
+};
+</file>
+
+<file path="CMakeLists.txt">
+cmake_minimum_required(VERSION 3.16)
+project(PasswordManager VERSION 1.0.0 LANGUAGES CXX)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(SQLITECPP_PATH ${CMAKE_CURRENT_SOURCE_DIR}/third_party/SQLiteCpp)
+
+set(SQLITECPP_INTERNAL_SQLITE ON CACHE BOOL "" FORCE)
+
+add_subdirectory(${SQLITECPP_PATH} EXCLUDE_FROM_ALL)
+
+message(STATUS "========================================")
+message(STATUS "SQLiteCpp path: ${SQLITECPP_PATH}")
+message(STATUS "SQLiteCpp include dir: ${SQLITECPP_PATH}/include")
+
+if(EXISTS ${SQLITECPP_PATH}/include/SQLiteCpp/Database.h)
+    message(STATUS "✓ SQLiteCpp/Database.h found")
+else()
+    message(WARNING "✗ SQLiteCpp/Database.h NOT found!")
+    message(STATUS "  Checking alternative paths:")
+    
+    if(EXISTS ${SQLITECPP_PATH}/SQLiteCpp/Database.h)
+        message(STATUS "  ✓ Found at: ${SQLITECPP_PATH}/SQLiteCpp/Database.h")
+    endif()
+    if(EXISTS ${SQLITECPP_PATH}/src/Database.h)
+        message(STATUS "  ✓ Found at: ${SQLITECPP_PATH}/src/Database.h")
+    endif()
+endif()
+
+if(TARGET SQLiteCpp)
+    message(STATUS "✓ SQLiteCpp target exists")
+    
+    get_target_property(SQLITECPP_INCLUDE_DIRS SQLiteCpp INTERFACE_INCLUDE_DIRECTORIES)
+    if(SQLITECPP_INCLUDE_DIRS)
+        message(STATUS "  Target include dirs: ${SQLITECPP_INCLUDE_DIRS}")
+    endif()
+else()
+    message(WARNING "✗ SQLiteCpp target does NOT exist")
+endif()
+message(STATUS "========================================")
+
+set(SOURCES
+    src/entry.cpp
+    src/password_entry.cpp
+    src/note_entry.cpp
+    src/vault.cpp
+    src/app.cpp
+    src/serializer.cpp
+    src/database_manager.cpp
+)
+
+add_executable(password_manager ${SOURCES})
+
+target_include_directories(password_manager PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${SQLITECPP_PATH}/include
+)
+
+target_link_libraries(password_manager PRIVATE 
+    SQLiteCpp
+)
+
+if(UNIX AND NOT APPLE)
+    target_link_libraries(password_manager PRIVATE pthread dl)
+elseif(APPLE)
+    target_link_libraries(password_manager PRIVATE)
+endif()
+
+if(MSVC)
+    target_compile_options(password_manager PRIVATE /W4)
+else()
+    target_compile_options(password_manager PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+</file>
+
+</files>
