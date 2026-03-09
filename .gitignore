@@ -82,3 +82,4 @@ docs/latex/
 *.tar.gz
 *.zip
 
+-files --others --exclude-standard
