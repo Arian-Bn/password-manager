@@ -1,7 +1,7 @@
 #include "database_manager.hpp"
+#include <SQLiteCpp/Statement.h>
 #include <exception>
 #include <iostream>
-#include <memory>
 
 const std::string DatabaseManager::CREATE_ENTRIES_TABLE =
     "CREATE TABLE IF NOT EXISTS entries ("
@@ -61,66 +61,66 @@ bool DatabaseManager::executeQuery(const std::string &query) {
     return false;
   }
 }
-int DatabaseManager::addEntry(const std::string &type,
-                              const std::string &title) {
+
+bool DatabaseManager::addPasswordEntry(const std::string &title,
+                                       const std::string &website,
+                                       const std::string &username,
+                                       const std::string &encrypted_password) {
   try {
-    if (!insert_entry_stmt_) {
-      insert_entry_stmt_ = std::make_unique<SQLite::Statement>(
-          db_, "INSERT INTO entries (type, title) VALUES (?, ?)");
-    }
+    db_.exec("BEGIN TRANSACTION");
+    SQLite::Statement insertEntry(
+        db_, "INSERT INTO entries (type, title) VALUES (?, ?)");
+    insertEntry.bind(1, "password");
+    insertEntry.bind(2, title);
+    insertEntry.exec();
 
-    insert_entry_stmt_->bind(1, type);
-    insert_entry_stmt_->bind(2, title);
-    insert_entry_stmt_->exec();
+    int entryId = db_.getLastInsertRowid();
 
-    int newId = db_.getLastInsertRowid();
+    SQLite::Statement insertPass(
+        db_, "INSERT INTO passwords (id, website, username, "
+             "encrypted_password) VALUES (?, ?, ?, ?)");
+    insertPass.bind(1, entryId);
+    insertPass.bind(2, website);
+    insertPass.bind(3, username);
+    insertPass.bind(4, encrypted_password);
+    insertPass.exec();
 
-    insert_entry_stmt_->reset();
-    std::cout << "Entry added with ID: " << newId << std::endl;
-    return newId;
+    db_.exec("COMMIT");
+    std::cout << "Password entry added with ID: " << entryId << std::endl;
+    return true;
 
   } catch (const std::exception &e) {
+    db_.exec("ROLLBACK");
     std::cerr << "Failed to add entry: " << e.what() << std::endl;
-    return -1;
+    return false;
   }
 }
 
-void DatabaseManager::addPasswordDetails(int entryId,
-                                         const std::string &website,
-                                         const std::string &username,
-                                         const std::string &encPassword) {
+bool DatabaseManager::addNoteEntry(const std::string &title,
+                                   const std::string &content) {
   try {
-    if (!insert_password_stmt_) {
-      insert_password_stmt_ = std::make_unique<SQLite::Statement>(
-          db_, "INSERT INTO passwords (id, website, username, "
-               "encrypted_password) VALUES (?, ?, ?, ?)");
-    }
+    db_.exec("BEGIN TRANSACTION");
 
-    insert_password_stmt_->bind(1, entryId);
-    insert_password_stmt_->bind(2, website);
-    insert_password_stmt_->bind(3, username);
-    insert_password_stmt_->bind(4, encPassword);
-    insert_password_stmt_->exec();
+    SQLite::Statement insertEntry(
+        db_, "INSERT INTO entries (type, title) VALUES (?, ?)");
+    insertEntry.bind(1, "note");
+    insertEntry.bind(2, title);
+    insertEntry.exec();
 
-    insert_password_stmt_->reset();
+    int entryId = db_.getLastInsertRowid();
+
+    SQLite::Statement insertNote(
+        db_, "INSERT INTO notes (id, content) VALUES (?, ?)");
+    insertNote.bind(1, entryId);
+    insertNote.bind(2, content);
+    insertNote.exec();
+
+    db_.exec("COMMIT");
+    std::cout << "Note entry added with ID: " << entryId << std::endl;
+    return true;
   } catch (const std::exception &e) {
+    db_.exec("ROLLBACK");
     std::cerr << "Failed to add entry: " << e.what() << std::endl;
-  }
-}
-
-void DatabaseManager::addNoteDetails(int entryId, const std::string &content) {
-  try {
-    if (!insert_note_stmt_) {
-      insert_note_stmt_ = std::make_unique<SQLite::Statement>(
-          db_, "INSERT INTO notes (id, content) VALUES (?, ?)");
-    }
-
-    insert_note_stmt_->bind(1, entryId);
-    insert_note_stmt_->bind(2, content);
-    insert_note_stmt_->exec();
-
-    insert_note_stmt_->reset();
-  } catch (const std::exception &e) {
-    std::cerr << "Failed to add entry: " << e.what() << std::endl;
+    return false;
   }
 }
