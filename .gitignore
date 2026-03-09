@@ -82,4 +82,7 @@ docs/latex/
 *.tar.gz
 *.zip
 
+# Другие правила...
+kod.txt
+repomix-output.xml
 -files --others --exclude-standard
