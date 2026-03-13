@@ -13,11 +13,11 @@ bool Serializer::saveToFile(const Vault &vault, const std::string &filename) {
   }
 
   int count = 0;
-  for (const auto &entry : vault.getAllEntries()) {
-    file << entry->serialize() << "\n";
-    count++;
-  }
-
+  // for (const auto &entry : vault.getAllEntries()) {
+  //   file << entry->serialize() << "\n";
+  //   count++;
+  // }
+  //
   file.close();
   std::cout << "Saved " << count << " entries to " << filename << std::endl;
   return true;
@@ -39,18 +39,21 @@ bool Serializer::loadFromFile(Vault &vault, const std::string &filename) {
     if (line.empty())
       continue;
 
-    auto entry = deserializeEntry(line);
-    if (entry) {
-      vault.addEntry(std::move(entry));
-      count++;
-    }
+    //   auto entry = deserializeEntry(line);
+    //   if (entry) {
+    //     vault.addEntry(std::move(entry));
+    //     count++;
+    //   }
+    // }
+
+    file.close();
+    std::cout << "Loaded " << count << " entries from " << filename
+              << std::endl;
+    return true;
   }
 
-  file.close();
-  std::cout << "Loaded " << count << " entries from " << filename << std::endl;
-  return true;
-}
-
-std::unique_ptr<Entry> Serializer::deserializeEntry(const std::string &line) {
-  return Entry::deserialize(line);
+  // std::unique_ptr<Entry> Serializer::deserializeEntry(const std::string
+  // &line) {
+  //   return Entry::deserialize(line);
+  // }
 }

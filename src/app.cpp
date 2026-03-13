@@ -15,8 +15,8 @@ void printMenu() {
   std::cout << "5. Delete Entry by Index\n";
   std::cout << "6. Clear All Entries\n";
   std::cout << "7. Show Entry Count\n";
-  std::cout << "8. Save to File\n";
-  std::cout << "9. Load from File\n";
+  // std::cout << "8. Save to File\n";
+  // std::cout << "9. Load from File\n";
   std::cout << "0. Exit\n";
   std::cout << "Choice: ";
 }
