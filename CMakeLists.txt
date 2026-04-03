@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Qt6
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+
 set(SQLITECPP_PATH ${CMAKE_CURRENT_SOURCE_DIR}/third_party/SQLiteCpp)
 
 set(SQLITECPP_INTERNAL_SQLITE ON CACHE BOOL "" FORCE)
@@ -53,15 +56,32 @@ set(SOURCES
     src/database_manager.cpp
 )
 
+set(CMAKE_AUTOMOC ON)
 add_executable(password_manager ${SOURCES})
+add_executable(securevault_qt src/main_qt.cpp src/mainwindow.cpp)
 
 target_include_directories(password_manager PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${SQLITECPP_PATH}/include
+    /usr/include/qt6
+    /usr/include/qt6/QtWidgets
+    /usr/include/qt6/QtCore
+)
+
+target_include_directories(securevault_qt PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+  ${SQLITECPP_PATH}/include
 )
 
 target_link_libraries(password_manager PRIVATE 
     SQLiteCpp
+)
+
+
+target_link_libraries(securevault_qt PRIVATE
+  Qt6::Core
+  Qt6::Widgets
+  SQLiteCpp
 )
 
 if(UNIX AND NOT APPLE)

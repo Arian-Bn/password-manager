@@ -2,6 +2,7 @@
 #include <SQLiteCpp/Database.h>
 #include <memory>
 #include <string>
+#include <vector>
 
 class DatabaseManager {
 public:
@@ -17,6 +18,9 @@ public:
   void beginTransaction();
   void commitTransaction();
   void rollbackTransaction();
+
+  std::vector<std::tuple<int, std::string, std::string, std::string>>
+  loadAllEntries() const;
 
 private:
   SQLite::Database db_;
