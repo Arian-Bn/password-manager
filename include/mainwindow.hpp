@@ -4,6 +4,7 @@
 #include <QPushButton>
 
 class MainWindow : public QMainWindow {
+  Q_OBJECT
 
 public:
   MainWindow(QWidget *parent = nullptr);
@@ -13,4 +14,9 @@ private:
   QPushButton *addNoteButton;
   QPushButton *deleteButton;
   QListWidget *entryList;
+
+private:
+  void onAddPasswordClicked();
+  void onAddNoteClicked();
+  void onDeleteClicked();
 };
