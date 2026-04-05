@@ -1,4 +1,5 @@
 #include "mainwindow.hpp"
+#include "database_manager.hpp"
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QWidget>
@@ -7,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   setWindowTitle("SecureVault");
   resize(800, 600);
 
-  // Create a central wodget
+  // Create a central widget
   QWidget *central = new QWidget(this);
   setCentralWidget(central);
 
@@ -50,4 +51,13 @@ void MainWindow::onDeleteClicked() {
   if (reply == QMessageBox::Yes) {
     QMessageBox::information(this, "Delete", "Entry deleted (placeholder)");
   }
+}
+
+void MainWindow::refreshEntryList() {
+  entryList->clear();
+
+  DatabaseManager db("Vault.db");
+  db.initialize();
+
+  entryList->addItem("Loading from database...");
 }
