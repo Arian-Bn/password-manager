@@ -20,4 +20,6 @@ private:
   QPushButton *addNoteButton;
   QPushButton *deleteButton;
   QListWidget *entryList;
+
+  void refreshEntryList();
 };
