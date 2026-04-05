@@ -2,6 +2,7 @@
 #include <QListWidget>
 #include <QMainWindow>
 #include <QPushButton>
+#include <qtmetamacros.h>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -9,14 +10,14 @@ class MainWindow : public QMainWindow {
 public:
   MainWindow(QWidget *parent = nullptr);
 
+private slots:
+  void onAddPasswordClicked();
+  void onAddNoteClicked();
+  void onDeleteClicked();
+
 private:
   QPushButton *addPasswordButton;
   QPushButton *addNoteButton;
   QPushButton *deleteButton;
   QListWidget *entryList;
-
-private:
-  void onAddPasswordClicked();
-  void onAddNoteClicked();
-  void onDeleteClicked();
 };

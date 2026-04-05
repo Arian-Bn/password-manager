@@ -58,8 +58,12 @@ set(SOURCES
 
 set(CMAKE_AUTOMOC ON)
 add_executable(password_manager ${SOURCES})
-add_executable(securevault_qt src/main_qt.cpp src/mainwindow.cpp)
+add_executable(securevault_qt 
+  src/main_qt.cpp 
+  src/mainwindow.cpp
+  include/mainwindow.hpp)
 
+set_target_properties(securevault_qt PROPERTIES AUTOMOC ON)
 target_include_directories(password_manager PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${SQLITECPP_PATH}/include
