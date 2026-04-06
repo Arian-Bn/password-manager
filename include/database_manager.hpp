@@ -22,6 +22,8 @@ public:
   std::vector<std::tuple<int, std::string, std::string, std::string>>
   loadAllEntries() const;
 
+  std::vector<std::tuple<int, std::string, std::string>> getAllEntries() const;
+
 private:
   SQLite::Database db_;
   std::string db_path_;
