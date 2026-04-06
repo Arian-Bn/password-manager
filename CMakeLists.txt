@@ -61,7 +61,13 @@ add_executable(password_manager ${SOURCES})
 add_executable(securevault_qt 
   src/main_qt.cpp 
   src/mainwindow.cpp
-  include/mainwindow.hpp)
+  include/mainwindow.hpp
+  src/database_manager.cpp
+  src/entry.cpp
+  src/password_entry.cpp
+  src/note_entry.cpp
+  src/vault.cpp
+)
 
 set_target_properties(securevault_qt PROPERTIES AUTOMOC ON)
 target_include_directories(password_manager PRIVATE 

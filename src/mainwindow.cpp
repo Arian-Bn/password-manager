@@ -18,12 +18,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   deleteButton = new QPushButton("Delete");
   entryList = new QListWidget();
 
+  // Load entries from database into list
+  refreshEntryList();
+
   connect(addPasswordButton, &QPushButton::clicked, this,
           &MainWindow::onAddPasswordClicked);
   connect(addNoteButton, &QPushButton::clicked, this,
           &MainWindow::onAddNoteClicked);
   connect(deleteButton, &QPushButton::clicked, this,
           &MainWindow::onDeleteClicked);
+  connect(entryList, &QListWidget::itemClicked, this,
+          &MainWindow::onEntryClicked);
 
   // Arranging in a grid
   QGridLayout *layout = new QGridLayout(central);
@@ -51,6 +56,12 @@ void MainWindow::onDeleteClicked() {
   if (reply == QMessageBox::Yes) {
     QMessageBox::information(this, "Delete", "Entry deleted (placeholder)");
   }
+}
+
+void MainWindow::onEntryClicked(QListWidgetItem *item) {
+  int id = item->data(Qt::UserRole).toInt();
+  QMessageBox::information(this, "Selected",
+                           "Record ID " + QString::number(id));
 }
 
 void MainWindow::refreshEntryList() {
