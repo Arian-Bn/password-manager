@@ -1,6 +1,7 @@
 #include "mainwindow.hpp"
 #include "database_manager.hpp"
 #include <QGridLayout>
+#include <QListWidgetItem>
 #include <QMessageBox>
 #include <QWidget>
 
@@ -70,5 +71,22 @@ void MainWindow::refreshEntryList() {
   DatabaseManager db("Vault.db");
   db.initialize();
 
-  entryList->addItem("Loading from database...");
+  auto entries = db.getAllEntries();
+
+  for (const auto &entry : entries) {
+    int id = std::get<0>(entry);
+    std::string title = std::get<1>(entry);
+    std::string type = std::get<2>(entry);
+
+    QString displayText = QString::fromStdString(title);
+    if (type == "password") {
+      displayText = "🔒 " + displayText;
+    } else {
+      displayText = "📝 " + displayText;
+    }
+
+    QListWidgetItem *item = new QListWidgetItem(displayText);
+    item->setData(Qt::UserRole, id);
+    entryList->addItem(item);
+  }
 }
