@@ -124,3 +124,20 @@ bool DatabaseManager::addNoteEntry(const std::string &title,
     return false;
   }
 }
+
+std::vector<std::tuple<int, std::string, std::string>>
+DatabaseManager::getAllEntries() const {
+  std::vector<std::tuple<int, std::string, std::string>> entries;
+
+  SQLite::Statement query(
+      db_, "SELECT id, title, type FROM entries ORDER BY ID DESC");
+
+  while (query.executeStep()) {
+    int id = query.getColumn(0);
+    std::string title = query.getColumn(1);
+    std::string type = query.getColumn(2);
+    entries.push_back({id, title, type});
+  }
+
+  return entries;
+}
