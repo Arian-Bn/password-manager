@@ -29,12 +29,12 @@ void ClearInputBuffer() {
 int main() {
   Vault vault;
 
-  DatabaseManager db("vault.db");
-  if (!db.initialize()) {
-    std::cerr << "Failed to initialize database.\n"
-                 "End program.\n";
-    return 1;
-  }
+  // DatabaseManager db("vault.db");
+  // if (!db.initialize()) {
+  //   std::cerr << "Failed to initialize database.\n"
+  //                "End program.\n";
+  //   return 1;
+  // }
 
   int choice = -1;
 

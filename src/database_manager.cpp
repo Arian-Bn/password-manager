@@ -141,3 +141,14 @@ DatabaseManager::getAllEntries() const {
 
   return entries;
 }
+
+bool DatabaseManager::clearAllEntries() {
+  try {
+    db_.exec("DELETE FROM entries");
+    std::cout << "All entries cleared" << std::endl;
+    return true;
+  } catch (const std::exception &e) {
+    std::cerr << "Failed to clear: " << e.what() << std::endl;
+    return false;
+  }
+}

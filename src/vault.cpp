@@ -17,7 +17,12 @@ void Vault::addNoteEntry(const std::string &title, const std::string &content) {
 }
 
 void Vault::displayAll() const {
-  std::cout << "Display from DB - coming soon..." << std::endl;
+  auto entries = dbManager->getAllEntries(); // нужно добавить这个方法
+  for (const auto &entry : entries) {
+    std::cout << "ID: " << std::get<0>(entry)
+              << " | Title: " << std::get<1>(entry)
+              << " | Type: " << std::get<2>(entry) << std::endl;
+  }
 }
 
 void Vault::findByTitle(const std::string &title) const {
@@ -25,7 +30,10 @@ void Vault::findByTitle(const std::string &title) const {
             << std::endl;
 }
 
-size_t Vault::getEntryCount() const { return 0; }
+size_t Vault::getEntryCount() const {
+  auto entries = dbManager->getAllEntries();
+  return entries.size();
+}
 
 bool Vault::deleteEntry(size_t index) {
   std::cout << "Delete entry " << index << " from DB - coming soon..."
@@ -33,4 +41,4 @@ bool Vault::deleteEntry(size_t index) {
   return false;
 }
 
-void Vault::clear() { std::cout << "Clear DB - coming soon..." << std::endl; }
+void Vault::clear() { dbManager->clearAllEntries(); }
