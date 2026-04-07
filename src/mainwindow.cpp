@@ -45,6 +45,7 @@ void MainWindow::onAddPasswordClicked() {
   AddPasswordDialog dialog(this);
   if (dialog.exec() == QDialog::Accepted) {
     // TODO: Save in DB
+    QMessageBox::information(this, "Success", "Password saved (coming soon)");
     refreshEntryList();
   }
 }
@@ -53,6 +54,7 @@ void MainWindow::onAddNoteClicked() {
   AddNoteDialog dialog(this);
   if (dialog.exec() == QDialog::Accepted) {
     // TODO: SAve in DB
+    QMessageBox::information(this, "Success", "Note saved (coming soon)");
     refreshEntryList();
   }
 }
