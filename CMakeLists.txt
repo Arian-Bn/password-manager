@@ -63,12 +63,14 @@ add_executable(securevault_qt
   src/mainwindow.cpp
   include/mainwindow.hpp
   include/addPasswordDialog.hpp
+  include/addNoteDialog.hpp
   src/database_manager.cpp
   src/entry.cpp
   src/password_entry.cpp
   src/note_entry.cpp
   src/vault.cpp
   src/addPasswordDialog.cpp
+  src/addNoteDialog.cpp
 )
 
 set_target_properties(securevault_qt PROPERTIES AUTOMOC ON)

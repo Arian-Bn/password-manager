@@ -1,4 +1,5 @@
 #include "mainwindow.hpp"
+#include "addNoteDialog.hpp"
 #include "addPasswordDialog.hpp"
 #include "database_manager.hpp"
 #include <QGridLayout>
@@ -49,7 +50,11 @@ void MainWindow::onAddPasswordClicked() {
 }
 
 void MainWindow::onAddNoteClicked() {
-  QMessageBox::information(this, "Add Note", "Note entry form will be here");
+  AddNoteDialog dialog(this);
+  if (dialog.exec() == QDialog::Accepted) {
+    // TODO: SAve in DB
+    refreshEntryList();
+  }
 }
 
 void MainWindow::onDeleteClicked() {
