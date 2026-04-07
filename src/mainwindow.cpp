@@ -1,4 +1,5 @@
 #include "mainwindow.hpp"
+#include "addPasswordDialog.hpp"
 #include "database_manager.hpp"
 #include <QGridLayout>
 #include <QListWidgetItem>
@@ -40,8 +41,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 }
 
 void MainWindow::onAddPasswordClicked() {
-  QMessageBox::information(this, "Add Password",
-                           "Password entry form will be here");
+  AddPasswordDialog dialog(this);
+  if (dialog.exec() == QDialog::Accepted) {
+    // TODO: Save in DB
+    refreshEntryList();
+  }
 }
 
 void MainWindow::onAddNoteClicked() {
