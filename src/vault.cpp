@@ -35,10 +35,6 @@ size_t Vault::getEntryCount() const {
   return entries.size();
 }
 
-bool Vault::deleteEntry(size_t index) {
-  std::cout << "Delete entry " << index << " from DB - coming soon..."
-            << std::endl;
-  return false;
-}
+bool Vault::deleteEntry(int id) { return dbManager->deleteEntry(id); }
 
 void Vault::clear() { dbManager->clearAllEntries(); }

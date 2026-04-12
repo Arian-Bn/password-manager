@@ -25,6 +25,7 @@ public:
   std::vector<std::tuple<int, std::string, std::string>> getAllEntries() const;
 
   bool clearAllEntries();
+  bool deleteEntry(int id);
 
 private:
   SQLite::Database db_;

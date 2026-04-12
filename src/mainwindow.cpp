@@ -2,6 +2,7 @@
 #include "addNoteDialog.hpp"
 #include "addPasswordDialog.hpp"
 #include "database_manager.hpp"
+#include "vault.hpp"
 #include <QGridLayout>
 #include <QListWidgetItem>
 #include <QMessageBox>
@@ -44,28 +45,44 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 void MainWindow::onAddPasswordClicked() {
   AddPasswordDialog dialog(this);
   if (dialog.exec() == QDialog::Accepted) {
-    // TODO: Save in DB
-    QMessageBox::information(this, "Success", "Password saved (coming soon)");
+    Vault vault;
+    vault.addPasswordEntry(
+        dialog.getTitle().toStdString(), dialog.getWebsite().toStdString(),
+        dialog.getUsername().toStdString(), dialog.getPassword().toStdString());
     refreshEntryList();
+    QMessageBox::information(this, "Success", "Password saved (coming soon)");
   }
 }
 
 void MainWindow::onAddNoteClicked() {
   AddNoteDialog dialog(this);
   if (dialog.exec() == QDialog::Accepted) {
-    // TODO: SAve in DB
-    QMessageBox::information(this, "Success", "Note saved (coming soon)");
+    Vault vault;
+    vault.addNoteEntry(dialog.getTitle().toStdString(),
+                       dialog.getContent().toStdString());
     refreshEntryList();
+    QMessageBox::information(this, "Success", "Note saved (coming soon)");
   }
 }
 
 void MainWindow::onDeleteClicked() {
+  QListWidgetItem *current = entryList->currentItem();
+  if (!current) {
+    QMessageBox::warning(this, "Warning", "No entry selected");
+    return;
+  }
+
+  int id = current->data(Qt::UserRole).toInt();
+
   QMessageBox::StandardButtons reply;
   reply = QMessageBox::question(
       this, "Delete", "Are you sure you want to delete the selected entry?",
       QMessageBox::Yes | QMessageBox::No);
 
   if (reply == QMessageBox::Yes) {
+    Vault vault;
+    vault.deleteEntry(id);
+    refreshEntryList();
     QMessageBox::information(this, "Delete", "Entry deleted (placeholder)");
   }
 }

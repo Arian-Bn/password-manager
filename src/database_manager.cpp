@@ -152,3 +152,20 @@ bool DatabaseManager::clearAllEntries() {
     return false;
   }
 }
+
+bool DatabaseManager::deleteEntry(int id) {
+  try {
+    db_.exec("BEGIN  TRANSACTION");
+    SQLite::Statement query(db_, "DELETE FROM entries WHERE id = ?");
+    query.bind(1, id);
+    query.exec();
+
+    db_.exec("COMMIT");
+    std::cout << "Entry " << id << " deleted" << std::endl;
+    return true;
+  } catch (const std::exception &e) {
+    db_.exec("ROLLBACK");
+    std::cerr << "Delete failed: " << e.what() << std::endl;
+    return false;
+  }
+}

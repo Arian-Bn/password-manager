@@ -17,7 +17,7 @@ public:
   void findByTitle(const std::string &title) const;
 
   size_t getEntryCount() const;
-  bool deleteEntry(size_t index);
+  bool deleteEntry(int id);
   void clear();
 
 private:
