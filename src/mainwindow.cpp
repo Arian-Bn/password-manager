@@ -31,8 +31,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
           &MainWindow::onAddNoteClicked);
   connect(deleteButton, &QPushButton::clicked, this,
           &MainWindow::onDeleteClicked);
-  connect(entryList, &QListWidget::itemClicked, this,
-          &MainWindow::onEntryClicked);
 
   // Arranging in a grid
   QGridLayout *layout = new QGridLayout(central);
@@ -40,6 +38,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   layout->addWidget(addNoteButton, 0, 1);
   layout->addWidget(deleteButton, 0, 2);
   layout->addWidget(entryList, 1, 0, 1, 3);
+
+  connect(entryList, &QListWidget::itemDoubleClicked, this,
+          &MainWindow::onEditEntry);
 }
 
 void MainWindow::onAddPasswordClicked() {
@@ -87,12 +88,6 @@ void MainWindow::onDeleteClicked() {
   }
 }
 
-void MainWindow::onEntryClicked(QListWidgetItem *item) {
-  int id = item->data(Qt::UserRole).toInt();
-  QMessageBox::information(this, "Selected",
-                           "Record ID " + QString::number(id));
-}
-
 void MainWindow::refreshEntryList() {
   entryList->clear();
 
@@ -117,4 +112,13 @@ void MainWindow::refreshEntryList() {
     item->setData(Qt::UserRole, id);
     entryList->addItem(item);
   }
+}
+
+void MainWindow::onEditEntry(QListWidgetItem *item) {
+  if (!item)
+    return;
+
+  int id = item->data(Qt::UserRole).toInt();
+  QMessageBox::information(this, "Edit",
+                           "Edit entry ID: " + QString::number(id));
 }

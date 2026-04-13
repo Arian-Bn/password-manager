@@ -14,7 +14,7 @@ private slots:
   void onAddPasswordClicked();
   void onAddNoteClicked();
   void onDeleteClicked();
-  void onEntryClicked(QListWidgetItem *item);
+  void onEditEntry(QListWidgetItem *item);
 
 private:
   QPushButton *addPasswordButton;
