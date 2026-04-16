@@ -27,6 +27,10 @@ public:
   bool clearAllEntries();
   bool deleteEntry(int id);
 
+  std::tuple<int, std::string, std::string, std::string, std::string>
+  getPasswordEntry(int id);
+  std::pair<int, std::string> getNoteEntry(int id);
+
 private:
   SQLite::Database db_;
   std::string db_path_;
