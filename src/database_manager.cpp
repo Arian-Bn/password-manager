@@ -169,3 +169,32 @@ bool DatabaseManager::deleteEntry(int id) {
     return false;
   }
 }
+
+std::tuple<int, std::string, std::string, std::string, std::string>
+DatabaseManager::getPasswordEntry(int id) {
+  SQLite::Statement query(
+      db_, "SELECT e.id, e.title, p.website, p.username, p.encrypted_password"
+           "FROM entries e JOIN passwords p ON e.id = p.id WHERE e.id = ?");
+  query.bind(1, id);
+
+  if (query.executeStep()) {
+    return {query.getColumn(0), query.getColumn(1), query.getColumn(2),
+            query.getColumn(3), query.getColumn(4)};
+  }
+
+  return {0, "", "", "", ""};
+}
+
+std::tuple<int, std::string, std::string>
+DatabaseManager::getNoteEntry(int id) {
+  SQLite::Statement query(db_, "SELECT e.id, e.title, n.content FROM entries e "
+                               "JOIN note n ON e.id = n.id WHERE e.id = ?");
+
+  query.bind(1, id);
+
+  if (query.executeStep()) {
+    return {query.getColumn(0), query.getColumn(1), query.getColumn(2)};
+  }
+
+  return {0, "", ""};
+}

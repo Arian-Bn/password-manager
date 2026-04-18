@@ -29,7 +29,7 @@ public:
 
   std::tuple<int, std::string, std::string, std::string, std::string>
   getPasswordEntry(int id);
-  std::pair<int, std::string> getNoteEntry(int id);
+  std::tuple<int, std::string, std::string> getNoteEntry(int id);
 
 private:
   SQLite::Database db_;
