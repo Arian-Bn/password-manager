@@ -1,6 +1,5 @@
 #include "mainwindow.hpp"
 #include "addNoteDialog.hpp"
-#include "addPasswordDialog.hpp"
 #include "database_manager.hpp"
 #include "vault.hpp"
 #include <QGridLayout>
@@ -9,7 +8,7 @@
 #include <QWidget>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-  setWindowTitle("SecureVault");
+  setWindowTitle("NotesVault");
   resize(800, 600);
 
   // Create a central widget
@@ -17,16 +16,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   setCentralWidget(central);
 
   // Create buttons
-  addPasswordButton = new QPushButton("Add Password");
-  addNoteButton = new QPushButton("Add Notes");
+  addNoteButton = new QPushButton("Add Note");
   deleteButton = new QPushButton("Delete");
   entryList = new QListWidget();
 
   // Load entries from database into list
   refreshEntryList();
 
-  connect(addPasswordButton, &QPushButton::clicked, this,
-          &MainWindow::onAddPasswordClicked);
   connect(addNoteButton, &QPushButton::clicked, this,
           &MainWindow::onAddNoteClicked);
   connect(deleteButton, &QPushButton::clicked, this,
@@ -34,25 +30,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
   // Arranging in a grid
   QGridLayout *layout = new QGridLayout(central);
-  layout->addWidget(addPasswordButton, 0, 0);
-  layout->addWidget(addNoteButton, 0, 1);
-  layout->addWidget(deleteButton, 0, 2);
-  layout->addWidget(entryList, 1, 0, 1, 3);
+  layout->addWidget(addNoteButton, 0, 0);
+  layout->addWidget(deleteButton, 0, 1);
+  layout->addWidget(entryList, 1, 0, 1, 2);
 
   connect(entryList, &QListWidget::itemDoubleClicked, this,
           &MainWindow::onEditEntry);
-}
-
-void MainWindow::onAddPasswordClicked() {
-  AddPasswordDialog dialog(this);
-  if (dialog.exec() == QDialog::Accepted) {
-    Vault vault;
-    vault.addPasswordEntry(
-        dialog.getTitle().toStdString(), dialog.getWebsite().toStdString(),
-        dialog.getUsername().toStdString(), dialog.getPassword().toStdString());
-    refreshEntryList();
-    QMessageBox::information(this, "Success", "Password saved (coming soon)");
-  }
 }
 
 void MainWindow::onAddNoteClicked() {
@@ -62,7 +45,6 @@ void MainWindow::onAddNoteClicked() {
     vault.addNoteEntry(dialog.getTitle().toStdString(),
                        dialog.getContent().toStdString());
     refreshEntryList();
-    QMessageBox::information(this, "Success", "Note saved (coming soon)");
   }
 }
 
@@ -84,7 +66,6 @@ void MainWindow::onDeleteClicked() {
     Vault vault;
     vault.deleteEntry(id);
     refreshEntryList();
-    QMessageBox::information(this, "Delete", "Entry deleted (placeholder)");
   }
 }
 
@@ -102,9 +83,7 @@ void MainWindow::refreshEntryList() {
     std::string type = std::get<2>(entry);
 
     QString displayText = QString::fromStdString(title);
-    if (type == "password") {
-      displayText = "🔒 " + displayText;
-    } else {
+    if (type == "note") {
       displayText = "📝 " + displayText;
     }
 
