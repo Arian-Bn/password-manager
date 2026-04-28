@@ -1,6 +1,5 @@
 #include "../include/entry.hpp"
 #include "../include/note_entry.hpp"
-#include "../include/password_entry.hpp"
 #include <iostream>
 #include <sstream>
 
@@ -25,15 +24,7 @@ std::unique_ptr<Entry> Entry::deserialize(const std::string &data) {
   std::string type;
   std::getline(iss, type, '|');
 
-  if (type == "password") {
-    std::string title, website, username, password;
-    std::getline(iss, title, '|');
-    std::getline(iss, website, '|');
-    std::getline(iss, username, '|');
-    std::getline(iss, password);
-
-    return std::make_unique<PasswordEntry>(title, website, username, password);
-  } else if (type == "note") {
+  if (type == "note") {
     std::string title, content;
     std::getline(iss, title, '|');
     std::getline(iss, content);

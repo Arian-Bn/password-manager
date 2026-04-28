@@ -15,6 +15,8 @@ add_subdirectory(${SQLITECPP_PATH} EXCLUDE_FROM_ALL)
 set(CMAKE_AUTOMOC ON)
 
 add_executable(notes_manager
+  include/mainwindow.hpp
+  include/addNoteDialog.hpp
   src/main_qt.cpp
   src/mainwindow.cpp
   src/addNoteDialog.cpp

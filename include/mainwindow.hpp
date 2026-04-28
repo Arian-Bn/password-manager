@@ -11,13 +11,11 @@ public:
   MainWindow(QWidget *parent = nullptr);
 
 private slots:
-  void onAddPasswordClicked();
   void onAddNoteClicked();
   void onDeleteClicked();
   void onEditEntry(QListWidgetItem *item);
 
 private:
-  QPushButton *addPasswordButton;
   QPushButton *addNoteButton;
   QPushButton *deleteButton;
   QListWidget *entryList;

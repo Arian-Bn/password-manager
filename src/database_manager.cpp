@@ -6,18 +6,9 @@
 const std::string DatabaseManager::CREATE_ENTRIES_TABLE =
     "CREATE TABLE IF NOT EXISTS entries ("
     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-    "type TEXT NOT NULL CHECK(type IN ('password', 'note')),"
+    "type TEXT NOT NULL CHECK(type IN ('note')),"
     "title TEXT NOT NULL,"
     "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
-    ");";
-
-const std::string DatabaseManager::CREATE_PASSWORDS_TABLE =
-    "CREATE TABLE IF NOT EXISTS passwords ("
-    "id INTEGER PRIMARY KEY,"
-    "website TEXT NOT NULL,"
-    "username TEXT NOT NULL,"
-    "encrypted_password TEXT NOT NULL,"
-    "FOREIGN KEY(id) REFERENCES entries(id) ON DELETE CASCADE"
     ");";
 
 const std::string DatabaseManager::CREATE_NOTES_TABLE =
@@ -36,12 +27,10 @@ DatabaseManager::DatabaseManager(const std::string &path)
 bool DatabaseManager::initialize() {
   try {
     db_.exec(CREATE_ENTRIES_TABLE);
-    db_.exec(CREATE_PASSWORDS_TABLE);
     db_.exec(CREATE_NOTES_TABLE);
 
     std::cout << "All tables created successfully" << std::endl;
     std::cout << " - entries table ready" << std::endl;
-    std::cout << " - passwords table ready" << std::endl;
     std::cout << " - notes table ready" << std::endl;
     return true;
 
@@ -58,40 +47,6 @@ bool DatabaseManager::executeQuery(const std::string &query) {
     return true;
   } catch (const std::exception &e) {
     std::cout << "Query failed: " << e.what() << std::endl;
-    return false;
-  }
-}
-
-bool DatabaseManager::addPasswordEntry(const std::string &title,
-                                       const std::string &website,
-                                       const std::string &username,
-                                       const std::string &encrypted_password) {
-  try {
-    db_.exec("BEGIN TRANSACTION");
-    SQLite::Statement insertEntry(
-        db_, "INSERT INTO entries (type, title) VALUES (?, ?)");
-    insertEntry.bind(1, "password");
-    insertEntry.bind(2, title);
-    insertEntry.exec();
-
-    int entryId = db_.getLastInsertRowid();
-
-    SQLite::Statement insertPass(
-        db_, "INSERT INTO passwords (id, website, username, "
-             "encrypted_password) VALUES (?, ?, ?, ?)");
-    insertPass.bind(1, entryId);
-    insertPass.bind(2, website);
-    insertPass.bind(3, username);
-    insertPass.bind(4, encrypted_password);
-    insertPass.exec();
-
-    db_.exec("COMMIT");
-    std::cout << "Password entry added with ID: " << entryId << std::endl;
-    return true;
-
-  } catch (const std::exception &e) {
-    db_.exec("ROLLBACK");
-    std::cerr << "Failed to add entry: " << e.what() << std::endl;
     return false;
   }
 }
@@ -170,25 +125,10 @@ bool DatabaseManager::deleteEntry(int id) {
   }
 }
 
-std::tuple<int, std::string, std::string, std::string, std::string>
-DatabaseManager::getPasswordEntry(int id) {
-  SQLite::Statement query(
-      db_, "SELECT e.id, e.title, p.website, p.username, p.encrypted_password"
-           "FROM entries e JOIN passwords p ON e.id = p.id WHERE e.id = ?");
-  query.bind(1, id);
-
-  if (query.executeStep()) {
-    return {query.getColumn(0), query.getColumn(1), query.getColumn(2),
-            query.getColumn(3), query.getColumn(4)};
-  }
-
-  return {0, "", "", "", ""};
-}
-
 std::tuple<int, std::string, std::string>
 DatabaseManager::getNoteEntry(int id) {
   SQLite::Statement query(db_, "SELECT e.id, e.title, n.content FROM entries e "
-                               "JOIN note n ON e.id = n.id WHERE e.id = ?");
+                               "JOIN notes n ON e.id = n.id WHERE e.id = ?");
 
   query.bind(1, id);
 
