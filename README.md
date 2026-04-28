@@ -1,62 +1,59 @@
-# 🔐 C++ Password Manager
+# 📝 Notes Manager
 
-A secure password manager built from scratch in C++20, following a disciplined 14-week development plan. This project demonstrates professional C++ development practices, modern architecture, and security principles.
+A desktop note-taking application built with C++20 and Qt6. Create, edit, delete, and search notes stored in a local SQLite database. Clean architecture with RAII, smart pointers, and OOP design.
 
 ---
 
-## 📊 Current Status: Week 2 Completed ✅
+## 📊 Current Status: Week 1 Completed ✅
 
-**Week 2 Goal Achieved:** File persistence and memory safety.
+**Goal Achieved:** Core GUI with note CRUD operations and SQLite persistence.
 
 ### ✅ What's Working Now:
-- **File Persistence**: Save/load vault to/from text files ✓
-- **Serialization**: Convert entries to/from string format ✓
-- **Memory Safety**: RAII with smart pointers, no leaks ✓
-- **User Interface**: Save/Load menu options with auto-save ✓
-- **Error Handling**: File not found, invalid input ✓
+- **Qt6 GUI**: Main window with note list, add and delete buttons
+- **SQLite Database**: Persistent storage with notes table
+- **Add Notes**: Dialog with title and content fields
+- **Delete Notes**: Confirmation dialog, cascading delete
+- **Memory Safety**: RAII with smart pointers, no leaks
 
-### 🚀 Next Steps (Week 3):
-- SQLite database integration
-- Data encryption with libsodium
-- Master password protection
+### 🚀 Next Steps:
+- Search by title
+- Categories and filtering
+- Edit notes on double-click
 
 ---
 
 ## 🛠️ Technologies Used
 
-- **C++20** - Modern C++ with latest features
-- **CMake 3.16+** - Cross-platform build system
-- **Git** - Version control with daily commits
-- **Object-Oriented Design** - Polymorphism, encapsulation, inheritance
-- **RAII Principles** - Resource management through object lifetimes
+- **C++20** — Modern C++ with latest features
+- **Qt6** — GUI framework (Widgets, signals/slots)
+- **SQLite3** — Local database via SQLiteCpp
+- **CMake 3.16+** — Cross-platform build system
+- **Git** — Version control
 
 ---
 
 ## 📁 Project Structure
 
-Проект организован по классической схеме:
-- `include/` — заголовочные файлы классов
-- `src/` — исходный код
-- `CMakeLists.txt` — конфигурация сборки
+- `include/` — Header files
+- `src/` — Source files
+- `CMakeLists.txt` — Build configuration
 
 ---
 
 ## 🚀 Build & Run
 
 ### Prerequisites
-- C++20 compatible compiler (GCC 10+, Clang 12+, MSVC 2019+)
+- C++20 compatible compiler (GCC 10+, Clang 12+)
+- Qt6 (Core, Widgets)
 - CMake 3.16+
 
 ### Build Instructions
 ```bash
-# Clone repository
 git clone <repository-url>
-cd password-manager
+cd notes-manager
 
-# Configure and build
-mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --parallel
+cmake -B build
+cmake --build build
 
 # Run application
-./password_manager
+./build/notes_manager
