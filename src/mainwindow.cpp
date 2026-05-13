@@ -82,10 +82,7 @@ void MainWindow::refreshEntryList() {
     std::string title = std::get<1>(entry);
     std::string type = std::get<2>(entry);
 
-    QString displayText = QString::fromStdString(title);
-    if (type == "note") {
-      displayText = "📝 " + displayText;
-    }
+    QString displayText = "📝 " + QString::fromStdString(title);
 
     QListWidgetItem *item = new QListWidgetItem(displayText);
     item->setData(Qt::UserRole, id);
