@@ -29,11 +29,7 @@ bool DatabaseManager::initialize() {
     db_.exec(CREATE_ENTRIES_TABLE);
     db_.exec(CREATE_NOTES_TABLE);
 
-    std::cout << "All tables created successfully" << std::endl;
-    std::cout << " - entries table ready" << std::endl;
-    std::cout << " - notes table ready" << std::endl;
     return true;
-
   } catch (const std::exception &e) {
     std::cerr << "SQL error: " << e.what() << std::endl;
     return false;
