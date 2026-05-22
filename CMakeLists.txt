@@ -21,8 +21,6 @@ add_executable(notes_manager
   src/mainwindow.cpp
   src/addNoteDialog.cpp
   src/database_manager.cpp
-  src/entry.cpp
-  src/note_entry.cpp
   src/vault.cpp
 )
 
