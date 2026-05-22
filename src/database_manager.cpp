@@ -1,5 +1,4 @@
 #include "database_manager.hpp"
-#include <SQLiteCpp/Statement.h>
 #include <exception>
 #include <iostream>
 
@@ -20,9 +19,7 @@ const std::string DatabaseManager::CREATE_NOTES_TABLE =
 
 DatabaseManager::DatabaseManager(const std::string &path)
     : db_(path.c_str(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE),
-      db_path_(path) {
-  std::cout << "Database opened: " << path << std::endl;
-}
+      db_path_(path) {}
 
 bool DatabaseManager::initialize() {
   try {
@@ -67,7 +64,6 @@ bool DatabaseManager::addNoteEntry(const std::string &title,
     insertNote.exec();
 
     db_.exec("COMMIT");
-    std::cout << "Note entry added with ID: " << entryId << std::endl;
     return true;
   } catch (const std::exception &e) {
     db_.exec("ROLLBACK");
@@ -112,7 +108,6 @@ bool DatabaseManager::deleteEntry(int id) {
     query.exec();
 
     db_.exec("COMMIT");
-    std::cout << "Entry " << id << " deleted" << std::endl;
     return true;
   } catch (const std::exception &e) {
     db_.exec("ROLLBACK");
