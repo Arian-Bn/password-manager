@@ -4,8 +4,9 @@ Vault::Vault() : dbManager(std::make_unique<DatabaseManager>("Vault.db")) {
   dbManager->initialize();
 }
 
-void Vault::addNoteEntry(const std::string &title, const std::string &content) {
-  dbManager->addNoteEntry(title, content);
+void Vault::addNoteEntry(const std::string &title, const std::string &content,
+                         const std::string &category) {
+  dbManager->addNoteEntry(title, content, category);
 }
 
 bool Vault::deleteEntry(int id) { return dbManager->deleteEntry(id); }

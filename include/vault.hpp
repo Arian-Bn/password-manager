@@ -7,7 +7,8 @@ class Vault {
 public:
   Vault();
 
-  void addNoteEntry(const std::string &title, const std::string &content);
+  void addNoteEntry(const std::string &title, const std::string &content,
+                    const std::string &category);
   bool deleteEntry(int id);
   void clear();
 

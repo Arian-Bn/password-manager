@@ -64,7 +64,8 @@ void MainWindow::onAddNoteClicked() {
   if (dialog.exec() == QDialog::Accepted) {
     Vault vault;
     vault.addNoteEntry(dialog.getTitle().toStdString(),
-                       dialog.getContent().toStdString());
+                       dialog.getContent().toStdString(),
+                       dialog.getCategory().toStdString());
     refreshEntryList();
   }
 }

@@ -14,6 +14,7 @@ const std::string DatabaseManager::CREATE_NOTES_TABLE =
     "CREATE TABLE IF NOT EXISTS notes ("
     "id INTEGER PRIMARY KEY,"
     "content TEXT NOT NULL,"
+    "category TEXT,"
     "FOREIGN KEY(id) REFERENCES entries(id) ON DELETE CASCADE"
     ");";
 
@@ -45,7 +46,8 @@ bool DatabaseManager::executeQuery(const std::string &query) {
 }
 
 bool DatabaseManager::addNoteEntry(const std::string &title,
-                                   const std::string &content) {
+                                   const std::string &content,
+                                   const std::string &category) {
   try {
     db_.exec("BEGIN TRANSACTION");
 
@@ -58,9 +60,10 @@ bool DatabaseManager::addNoteEntry(const std::string &title,
     int entryId = db_.getLastInsertRowid();
 
     SQLite::Statement insertNote(
-        db_, "INSERT INTO notes (id, content) VALUES (?, ?)");
+        db_, "INSERT INTO notes (id, content, category) VALUES (?, ?, ?)");
     insertNote.bind(1, entryId);
     insertNote.bind(2, content);
+    insertNote.bind(3, category);
     insertNote.exec();
 
     db_.exec("COMMIT");

@@ -10,7 +10,8 @@ public:
   bool initialize();
   bool executeQuery(const std::string &query);
 
-  bool addNoteEntry(const std::string &title, const std::string &content);
+  bool addNoteEntry(const std::string &title, const std::string &content,
+                    const std::string &category);
   std::vector<std::tuple<int, std::string, std::string>> getAllEntries() const;
   bool clearAllEntries();
   bool deleteEntry(int id);

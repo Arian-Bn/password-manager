@@ -7,8 +7,10 @@ AddNoteDialog::AddNoteDialog(QWidget *parent) : QDialog(parent) {
 
   titleEdit = new QLineEdit;
   contentEdit = new QLineEdit;
+  categoryEdit = new QLineEdit;
 
   QFormLayout *layout = new QFormLayout;
+  layout->addRow("Category: ", categoryEdit);
   layout->addRow("Title: ", titleEdit);
   layout->addRow("Content: ", contentEdit);
 
@@ -23,3 +25,4 @@ AddNoteDialog::AddNoteDialog(QWidget *parent) : QDialog(parent) {
 
 QString AddNoteDialog::getTitle() const { return titleEdit->text(); }
 QString AddNoteDialog::getContent() const { return contentEdit->text(); }
+QString AddNoteDialog::getCategory() const { return categoryEdit->text(); }

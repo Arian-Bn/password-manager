@@ -9,8 +9,10 @@ public:
 
   QString getTitle() const;
   QString getContent() const;
+  QString getCategory() const;
 
 private:
   QLineEdit *titleEdit;
   QLineEdit *contentEdit;
+  QLineEdit *categoryEdit;
 };
