@@ -17,7 +17,8 @@ public:
   bool deleteEntry(int id);
   std::tuple<int, std::string, std::string> getNoteEntry(int id);
   std::vector<std::tuple<int, std::string, std::string>>
-  getEntriesFiltered(const std::string &title);
+  getEntriesFiltered(const std::string &title, const std::string &category);
+  std::vector<std::string> getAllCategories() const;
 
 private:
   SQLite::Database db_;

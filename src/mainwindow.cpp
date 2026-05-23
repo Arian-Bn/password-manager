@@ -22,9 +22,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   entryList = new QListWidget(this);
   lineEdit = new QLineEdit(this);
   lineEdit->setPlaceholderText("Search by title...");
+  categoryFilter = new QComboBox(this);
 
   // Load entries from database into list
   refreshEntryList();
+  refreshCategoryFilter();
 
   connect(addNoteButton, &QPushButton::clicked, this,
           &MainWindow::onAddNoteClicked);
@@ -40,8 +42,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   QGridLayout *layout = new QGridLayout(central);
   layout->addWidget(addNoteButton, 0, 0);
   layout->addWidget(deleteButton, 0, 1);
-  layout->addWidget(exitButton, 0, 3);
-  layout->addWidget(lineEdit, 1, 0, 1, 3);
+  layout->addWidget(exitButton, 0, 2);
+
+  layout->addWidget(categoryFilter, 1, 0);
+  layout->addWidget(lineEdit, 1, 1, 1, 2);
+
   layout->addWidget(entryList, 2, 0, 1, 3);
 }
 
@@ -70,6 +75,7 @@ void MainWindow::onAddNoteClicked() {
                        dialog.getContent().toStdString(),
                        dialog.getCategory().toStdString());
     refreshEntryList();
+    refreshCategoryFilter();
   }
 }
 
@@ -91,6 +97,7 @@ void MainWindow::onDeleteClicked() {
     Vault vault;
     vault.deleteEntry(id);
     refreshEntryList();
+    refreshCategoryFilter();
   }
 }
 
@@ -124,16 +131,28 @@ void MainWindow::onEditEntry(QListWidgetItem *item) {
   int id = item->data(Qt::UserRole).toInt();
   QMessageBox::information(this, "Edit",
                            "Edit entry ID: " + QString::number(id));
+  refreshCategoryFilter();
 }
 
 void MainWindow::onSearchTextChanged(const QString &text) {
   DatabaseManager db("Vault.db");
 
-  if (text.isEmpty()) {
-    auto entries = db.getAllEntries();
-    MainWindow::updateEntryList(entries);
-  } else {
-    auto entries = db.getEntriesFiltered(text.toStdString());
-    MainWindow::updateEntryList(entries);
+  QString category = categoryFilter->currentText();
+  std::string categoryStr = (category == "All") ? "" : category.toStdString();
+
+  auto entries = db.getEntriesFiltered(text.toStdString(), categoryStr);
+
+  updateEntryList(entries);
+}
+
+void MainWindow::refreshCategoryFilter() {
+  categoryFilter->clear();
+
+  DatabaseManager db("Vault.db");
+  auto categories = db.getAllCategories();
+
+  categoryFilter->addItem("All");
+  for (const auto &category : categories) {
+    categoryFilter->addItem(QString::fromStdString(category));
   }
 }

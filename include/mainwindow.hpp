@@ -1,4 +1,5 @@
 #pragma once
+#include <QComboBox>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QPushButton>
@@ -26,6 +27,8 @@ private:
   QPushButton *exitButton;
   QListWidget *entryList;
   QLineEdit *lineEdit;
+  QComboBox *categoryFilter;
 
   void refreshEntryList();
+  void refreshCategoryFilter();
 };

@@ -80,7 +80,7 @@ DatabaseManager::getAllEntries() const {
   std::vector<std::tuple<int, std::string, std::string>> entries;
 
   SQLite::Statement query(
-      db_, "SELECT id, title, type FROM entries ORDER BY ID DESC");
+      db_, "SELECT id, title, type FROM entries ORDER BY id DESC");
 
   while (query.executeStep()) {
     int id = query.getColumn(0);
@@ -134,13 +134,18 @@ DatabaseManager::getNoteEntry(int id) {
 }
 
 std::vector<std::tuple<int, std::string, std::string>>
-DatabaseManager::getEntriesFiltered(const std::string &title) {
+DatabaseManager::getEntriesFiltered(const std::string &title,
+                                    const std::string &category) {
   std::vector<std::tuple<int, std::string, std::string>> entries;
+
+  std::string searchCategory = category.empty() ? "%" : category;
+
   SQLite::Statement query(
       db_, "SELECT e.id, e.title, e.type FROM entries e JOIN notes n ON e.id = "
-           "n.id WHERE e.title LIKE '%' || ? || '%'");
+           "n.id WHERE e.title LIKE '%' || ? || '%' AND n.category LIKE ?");
 
   query.bind(1, title);
+  query.bind(2, searchCategory);
 
   while (query.executeStep()) {
     int id = query.getColumn(0);
@@ -150,4 +155,16 @@ DatabaseManager::getEntriesFiltered(const std::string &title) {
   }
 
   return entries;
+}
+
+std::vector<std::string> DatabaseManager::getAllCategories() const {
+  std::vector<std::string> categories;
+  SQLite::Statement query(db_, "SELECT DISTINCT category FROM notes WHERE "
+                               "category NOT NULL AND category != ''");
+
+  while (query.executeStep()) {
+    categories.push_back(query.getColumn(0));
+  }
+
+  return categories;
 }
