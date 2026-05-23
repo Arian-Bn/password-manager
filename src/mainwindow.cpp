@@ -18,8 +18,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   // Create buttons
   addNoteButton = new QPushButton("Add Note");
   deleteButton = new QPushButton("Delete");
-  entryList = new QListWidget();
+  entryList = new QListWidget(this);
   lineEdit = new QLineEdit(this);
+  lineEdit->setPlaceholderText("Search by title...");
 
   // Load entries from database into list
   refreshEntryList();
