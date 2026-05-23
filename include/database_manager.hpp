@@ -1,4 +1,5 @@
 #pragma once
+#include <QString>
 #include <SQLiteCpp/Database.h>
 #include <string>
 #include <vector>
@@ -14,6 +15,8 @@ public:
   bool clearAllEntries();
   bool deleteEntry(int id);
   std::tuple<int, std::string, std::string> getNoteEntry(int id);
+  std::vector<std::tuple<int, std::string, std::string>>
+  getEntriesFiltered(const std::string &title);
 
 private:
   SQLite::Database db_;

@@ -129,3 +129,22 @@ DatabaseManager::getNoteEntry(int id) {
 
   return {0, "", ""};
 }
+
+std::vector<std::tuple<int, std::string, std::string>>
+DatabaseManager::getEntriesFiltered(const std::string &title) {
+  std::vector<std::tuple<int, std::string, std::string>> entries;
+  SQLite::Statement query(
+      db_, "SELECT e.id, e.title, e.type FROM entries e JOIN notes n ON e.id = "
+           "n.id WHERE e.title LIKE '%' || ? || '%'");
+
+  query.bind(1, title);
+
+  while (query.executeStep()) {
+    int id = query.getColumn(0);
+    std::string title = query.getColumn(1);
+    std::string type = query.getColumn(2);
+    entries.push_back({id, title, type});
+  }
+
+  return entries;
+}

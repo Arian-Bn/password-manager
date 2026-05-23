@@ -41,6 +41,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   layout->addWidget(entryList, 2, 0, 1, 2);
 }
 
+void MainWindow::updateEntryList(
+    const std::vector<std::tuple<int, std::string, std::string>> &entries) {
+  entryList->clear();
+
+  for (const auto &entry : entries) {
+    int id = std::get<0>(entry);
+    std::string title = std::get<1>(entry);
+    std::string type = std::get<2>(entry);
+
+    QString displayText = "📝 " + QString::fromStdString(title);
+
+    QListWidgetItem *item = new QListWidgetItem(displayText);
+    item->setData(Qt::UserRole, id);
+    entryList->addItem(item);
+  }
+}
+
 void MainWindow::onAddNoteClicked() {
   AddNoteDialog dialog(this);
   if (dialog.exec() == QDialog::Accepted) {
@@ -104,4 +121,12 @@ void MainWindow::onEditEntry(QListWidgetItem *item) {
 
 void MainWindow::onSearchTextChanged(const QString &text) {
   DatabaseManager db("Vault.db");
+
+  if (text.isEmpty()) {
+    auto entries = db.getAllEntries();
+    MainWindow::updateEntryList(entries);
+  } else {
+    auto entries = db.getEntriesFiltered(text.toStdString());
+    MainWindow::updateEntryList(entries);
+  }
 }

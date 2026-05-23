@@ -1,5 +1,4 @@
 #pragma once
-#include <QLineEdit>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QPushButton>
@@ -10,6 +9,9 @@ class MainWindow : public QMainWindow {
 
 public:
   MainWindow(QWidget *parent = nullptr);
+
+  void updateEntryList(
+      const std::vector<std::tuple<int, std::string, std::string>> &entries);
 
 private slots:
   void onAddNoteClicked();
