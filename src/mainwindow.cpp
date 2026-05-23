@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   // Create buttons
   addNoteButton = new QPushButton("Add Note");
   deleteButton = new QPushButton("Delete");
+  exitButton = new QPushButton("Exit");
   entryList = new QListWidget(this);
   lineEdit = new QLineEdit(this);
   lineEdit->setPlaceholderText("Search by title...");
@@ -29,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
           &MainWindow::onAddNoteClicked);
   connect(deleteButton, &QPushButton::clicked, this,
           &MainWindow::onDeleteClicked);
+  connect(exitButton, &QPushButton::clicked, this, &MainWindow::onExitClicked);
   connect(entryList, &QListWidget::itemDoubleClicked, this,
           &MainWindow::onEditEntry);
   connect(lineEdit, &QLineEdit::textChanged, this,
@@ -38,8 +40,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   QGridLayout *layout = new QGridLayout(central);
   layout->addWidget(addNoteButton, 0, 0);
   layout->addWidget(deleteButton, 0, 1);
-  layout->addWidget(lineEdit, 1, 0, 1, 2);
-  layout->addWidget(entryList, 2, 0, 1, 2);
+  layout->addWidget(exitButton, 0, 3);
+  layout->addWidget(lineEdit, 1, 0, 1, 3);
+  layout->addWidget(entryList, 2, 0, 1, 3);
 }
 
 void MainWindow::updateEntryList(
@@ -90,6 +93,8 @@ void MainWindow::onDeleteClicked() {
     refreshEntryList();
   }
 }
+
+void MainWindow::onExitClicked() { close(); }
 
 void MainWindow::refreshEntryList() {
   entryList->clear();

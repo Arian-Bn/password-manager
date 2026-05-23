@@ -16,12 +16,14 @@ public:
 private slots:
   void onAddNoteClicked();
   void onDeleteClicked();
+  void onExitClicked();
   void onEditEntry(QListWidgetItem *item);
   void onSearchTextChanged(const QString &text);
 
 private:
   QPushButton *addNoteButton;
   QPushButton *deleteButton;
+  QPushButton *exitButton;
   QListWidget *entryList;
   QLineEdit *lineEdit;
 
