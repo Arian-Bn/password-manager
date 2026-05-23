@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   addNoteButton = new QPushButton("Add Note");
   deleteButton = new QPushButton("Delete");
   entryList = new QListWidget();
+  lineEdit = new QLineEdit(this);
 
   // Load entries from database into list
   refreshEntryList();
@@ -27,15 +28,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
           &MainWindow::onAddNoteClicked);
   connect(deleteButton, &QPushButton::clicked, this,
           &MainWindow::onDeleteClicked);
+  connect(entryList, &QListWidget::itemDoubleClicked, this,
+          &MainWindow::onEditEntry);
+  connect(lineEdit, &QLineEdit::textChanged, this,
+          &MainWindow::onSearchTextChanged);
 
   // Arranging in a grid
   QGridLayout *layout = new QGridLayout(central);
   layout->addWidget(addNoteButton, 0, 0);
   layout->addWidget(deleteButton, 0, 1);
-  layout->addWidget(entryList, 1, 0, 1, 2);
-
-  connect(entryList, &QListWidget::itemDoubleClicked, this,
-          &MainWindow::onEditEntry);
+  layout->addWidget(lineEdit, 1, 0, 1, 2);
+  layout->addWidget(entryList, 2, 0, 1, 2);
 }
 
 void MainWindow::onAddNoteClicked() {
@@ -97,4 +100,8 @@ void MainWindow::onEditEntry(QListWidgetItem *item) {
   int id = item->data(Qt::UserRole).toInt();
   QMessageBox::information(this, "Edit",
                            "Edit entry ID: " + QString::number(id));
+}
+
+void MainWindow::onSearchTextChanged(const QString &text) {
+  DatabaseManager db("Vault.db");
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include <QLineEdit>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QPushButton>
@@ -14,11 +15,13 @@ private slots:
   void onAddNoteClicked();
   void onDeleteClicked();
   void onEditEntry(QListWidgetItem *item);
+  void onSearchTextChanged(const QString &text);
 
 private:
   QPushButton *addNoteButton;
   QPushButton *deleteButton;
   QListWidget *entryList;
+  QLineEdit *lineEdit;
 
   void refreshEntryList();
 };
