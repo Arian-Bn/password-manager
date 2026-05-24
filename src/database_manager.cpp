@@ -119,18 +119,20 @@ bool DatabaseManager::deleteEntry(int id) {
   }
 }
 
-std::tuple<int, std::string, std::string>
+std::tuple<int, std::string, std::string, std::string>
 DatabaseManager::getNoteEntry(int id) {
-  SQLite::Statement query(db_, "SELECT e.id, e.title, n.content FROM entries e "
-                               "JOIN notes n ON e.id = n.id WHERE e.id = ?");
+  SQLite::Statement query(
+      db_, "SELECT e.id, e.title, n.content, n.category FROM entries e "
+           "JOIN notes n ON e.id = n.id WHERE e.id = ?");
 
   query.bind(1, id);
 
   if (query.executeStep()) {
-    return {query.getColumn(0), query.getColumn(1), query.getColumn(2)};
+    return {query.getColumn(0), query.getColumn(1), query.getColumn(2),
+            query.getColumn(3)};
   }
 
-  return {0, "", ""};
+  return {0, "", "", ""};
 }
 
 std::vector<std::tuple<int, std::string, std::string>>

@@ -15,7 +15,7 @@ public:
   std::vector<std::tuple<int, std::string, std::string>> getAllEntries() const;
   bool clearAllEntries();
   bool deleteEntry(int id);
-  std::tuple<int, std::string, std::string> getNoteEntry(int id);
+  std::tuple<int, std::string, std::string, std::string> getNoteEntry(int id);
   std::vector<std::tuple<int, std::string, std::string>>
   getEntriesFiltered(const std::string &title, const std::string &category);
   std::vector<std::string> getAllCategories() const;

@@ -1,9 +1,10 @@
 #pragma once
 #include <QComboBox>
+#include <QLabel>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QPushButton>
-#include <qtmetamacros.h>
+#include <QTextEdit>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -11,15 +12,13 @@ class MainWindow : public QMainWindow {
 public:
   MainWindow(QWidget *parent = nullptr);
 
-  void updateEntryList(
-      const std::vector<std::tuple<int, std::string, std::string>> &entries);
-
 private slots:
   void onAddNoteClicked();
   void onDeleteClicked();
   void onExitClicked();
   void onEditEntry(QListWidgetItem *item);
   void onSearchTextChanged(const QString &text);
+  void onNoteSelected(QListWidgetItem *item);
 
 private:
   QPushButton *addNoteButton;
@@ -28,7 +27,11 @@ private:
   QListWidget *entryList;
   QLineEdit *lineEdit;
   QComboBox *categoryFilter;
+  QLabel *categoryDisplay;
+  QTextEdit *noteContentDisplay;
 
   void refreshEntryList();
   void refreshCategoryFilter();
+  void updateEntryList(
+      const std::vector<std::tuple<int, std::string, std::string>> &entries);
 };

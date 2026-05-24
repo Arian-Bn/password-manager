@@ -6,10 +6,11 @@
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QWidget>
+#include <qtextedit.h>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   setWindowTitle("NotesVault");
-  resize(800, 600);
+  resize(1000, 600);
 
   // Create a central widget
   QWidget *central = new QWidget(this);
@@ -19,10 +20,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   addNoteButton = new QPushButton("Add Note");
   deleteButton = new QPushButton("Delete");
   exitButton = new QPushButton("Exit");
+
   entryList = new QListWidget(this);
+
   lineEdit = new QLineEdit(this);
   lineEdit->setPlaceholderText("Search by title...");
+
   categoryFilter = new QComboBox(this);
+
+  categoryDisplay = new QLabel(this);
+  categoryDisplay->setText("Category: ");
+  categoryDisplay->setFrameStyle(QFrame::Box);
+
+  noteContentDisplay = new QTextEdit(this);
+  noteContentDisplay->setReadOnly(true);
+  noteContentDisplay->setPlainText("Select a note to view content");
 
   // Load entries from database into list
   refreshEntryList();
@@ -37,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
           &MainWindow::onEditEntry);
   connect(lineEdit, &QLineEdit::textChanged, this,
           &MainWindow::onSearchTextChanged);
+  connect(entryList, &QListWidget::itemClicked, this,
+          &MainWindow::onNoteSelected);
 
   // Arranging in a grid
   QGridLayout *layout = new QGridLayout(central);
@@ -47,7 +61,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   layout->addWidget(categoryFilter, 1, 0);
   layout->addWidget(lineEdit, 1, 1, 1, 2);
 
-  layout->addWidget(entryList, 2, 0, 1, 3);
+  layout->addWidget(entryList, 2, 0, 2, 1);
+  layout->addWidget(categoryDisplay, 2, 1, 1, 2);
+
+  layout->addWidget(noteContentDisplay, 3, 1, 1, 2);
 }
 
 void MainWindow::updateEntryList(
@@ -155,4 +172,21 @@ void MainWindow::refreshCategoryFilter() {
   for (const auto &category : categories) {
     categoryFilter->addItem(QString::fromStdString(category));
   }
+}
+
+void MainWindow::onNoteSelected(QListWidgetItem *item) {
+  if (!item)
+    return;
+
+  int id = item->data(Qt::UserRole).toInt();
+
+  DatabaseManager db("Vault.db");
+  auto note = db.getNoteEntry(id);
+
+  std::string title = std::get<1>(note);
+  std::string content = std::get<2>(note);
+  std::string category = std::get<3>(note);
+
+  categoryDisplay->setText(QString::fromStdString("Category: " + category));
+  noteContentDisplay->setText(QString::fromStdString(content));
 }
