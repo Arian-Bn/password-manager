@@ -29,11 +29,13 @@ QString AddNoteDialog::getContent() const { return contentEdit->text(); }
 QString AddNoteDialog::getCategory() const { return categoryEdit->text(); }
 
 void AddNoteDialog::accept() {
+  // Prevent saving empty title
   if (titleEdit->text().isEmpty()) {
+    // Visual feedback for user
     titleEdit->setStyleSheet(
         "QLineEdit { border: 2px solid red; background: #ffeeee; }");
     titleEdit->setPlaceholderText("Title connot be empty!");
-    return;
+    return; // Keep dialog open
   }
 
   QDialog::accept();

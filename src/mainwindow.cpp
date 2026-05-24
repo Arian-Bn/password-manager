@@ -171,6 +171,9 @@ void MainWindow::onSearchTextChanged(const QString &text) {
   DatabaseManager db("Vault.db");
 
   QString category = categoryFilter->currentText();
+
+  // If "All" is selected in combo box, pass empty string to DatabaseManager
+  // It will be converted to '%' to match all categories
   std::string categoryStr = (category == "All") ? "" : category.toStdString();
 
   auto entries = db.getEntriesFiltered(text.toStdString(), categoryStr);

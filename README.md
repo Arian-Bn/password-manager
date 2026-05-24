@@ -1,24 +1,30 @@
 # 📝 Notes Manager
 
-A desktop note-taking application built with C++20 and Qt6. Create, edit, delete, and search notes stored in a local SQLite database. Clean architecture with RAII, smart pointers, and OOP design.
+A desktop note-taking application built with C++20 and Qt6. Create, edit, delete, search, and categorize notes stored in a local SQLite database. Clean architecture with RAII, smart pointers, and OOP design.
 
 ---
 
-## 📊 Current Status: Week 1 Completed ✅
+## 📊 Current Status: Week 3 Completed ✅
 
-**Goal Achieved:** Core GUI with note CRUD operations and SQLite persistence.
+**Goal Achieved:** Full-featured note manager with categories, search, and edit capabilities.
 
 ### ✅ What's Working Now:
-- **Qt6 GUI**: Main window with note list, add and delete buttons
-- **SQLite Database**: Persistent storage with notes table
-- **Add Notes**: Dialog with title and content fields
-- **Delete Notes**: Confirmation dialog, cascading delete
+- **Qt6 GUI**: Main window with note list, add, delete, and exit buttons
+- **SQLiteCpp Database**: Persistent storage with entries and notes tables
+- **Add Notes**: Dialog with title, content, and category fields
+- **Edit Notes**: Double-click to edit with pre-filled data
+- **Delete Notes**: Confirmation dialog with cascading delete
+- **Search**: Real-time search by title as you type
+- **Category Filter**: Dropdown with unique categories from database
+- **Note Details**: Click note to view full content and category
+- **Input Validation**: Title cannot be empty (red highlight + placeholder text)
 - **Memory Safety**: RAII with smart pointers, no leaks
+- **Foreign Key Constraints**: ON DELETE CASCADE with PRAGMA foreign_keys=ON
 
 ### 🚀 Next Steps:
-- Search by title
-- Categories and filtering
-- Edit notes on double-click
+- Google Test integration
+- Unit tests for database operations
+- CI/CD with GitHub Actions
 
 ---
 
@@ -26,7 +32,7 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 
 - **C++20** — Modern C++ with latest features
 - **Qt6** — GUI framework (Widgets, signals/slots)
-- **SQLite3** — Local database via SQLiteCpp
+- **SQLiteCpp** — C++ wrapper for SQLite3 (included as git submodule)
 - **CMake 3.16+** — Cross-platform build system
 - **Git** — Version control
 
@@ -46,12 +52,18 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 - C++20 compatible compiler (GCC 10+, Clang 12+)
 - Qt6 (Core, Widgets)
 - CMake 3.16+
+- Git (for submodule)
 
 ### Build Instructions
+
 ```bash
 git clone <repository-url>
 cd notes-manager
 
+# Initialize submodule
+git submodule update --init --recursive
+
+# Configure and build
 cmake -B build
 cmake --build build
 

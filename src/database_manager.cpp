@@ -24,6 +24,7 @@ DatabaseManager::DatabaseManager(const std::string &path)
 
 bool DatabaseManager::initialize() {
   try {
+    // Enable FOREIGN KEY support for ON DELETE CASCADE
     db_.exec("PRAGMA foreign_keys = ON;");
     db_.exec(CREATE_ENTRIES_TABLE);
     db_.exec(CREATE_NOTES_TABLE);
@@ -141,6 +142,8 @@ DatabaseManager::getEntriesFiltered(const std::string &title,
                                     const std::string &category) {
   std::vector<std::tuple<int, std::string, std::string>> entries;
 
+  // Use LIKE for category so that empty string (from "All" filter) becomes '%'
+  // a  nd matches all categories
   std::string searchCategory = category.empty() ? "%" : category;
 
   SQLite::Statement query(
