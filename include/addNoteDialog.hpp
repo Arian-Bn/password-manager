@@ -10,6 +10,7 @@ public:
   QString getTitle() const;
   QString getContent() const;
   QString getCategory() const;
+  void accept() override;
 
 private:
   QLineEdit *titleEdit;

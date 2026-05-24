@@ -10,6 +10,7 @@ EditNoteDialog::EditNoteDialog(int id, const QString &title,
                                QWidget *parent)
     : QDialog(parent), noteId(id) {
   setWindowTitle("Edit Note");
+  setFixedSize(400, 150);
 
   titleEdit = new QLineEdit(title);
   contentEdit = new QTextEdit;
