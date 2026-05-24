@@ -24,6 +24,7 @@ DatabaseManager::DatabaseManager(const std::string &path)
 
 bool DatabaseManager::initialize() {
   try {
+    db_.exec("PRAGMA foreign_keys = ON;");
     db_.exec(CREATE_ENTRIES_TABLE);
     db_.exec(CREATE_NOTES_TABLE);
 
@@ -169,4 +170,32 @@ std::vector<std::string> DatabaseManager::getAllCategories() const {
   }
 
   return categories;
+}
+
+bool DatabaseManager::updateNoteEntry(int id, const std::string &title,
+                                      const std::string &content,
+                                      const std::string &category) {
+  try {
+    db_.exec("BEGIN TRANSACTION");
+
+    SQLite::Statement updateEntry(db_,
+                                  "UPDATE entries SET title = ? WHERE id = ?");
+    updateEntry.bind(1, title);
+    updateEntry.bind(2, id);
+    updateEntry.exec();
+
+    SQLite::Statement updateNote(
+        db_, "UPDATE notes SET content = ?, category = ? WHERE id = ?");
+    updateNote.bind(1, content);
+    updateNote.bind(2, category);
+    updateNote.bind(3, id);
+    updateNote.exec();
+
+    db_.exec("COMMIT");
+    return true;
+  } catch (const std::exception &e) {
+    db_.exec("ROLLBACK");
+    std::cerr << "Faild to update entry:" << e.what() << std::endl;
+    return false;
+  }
 }

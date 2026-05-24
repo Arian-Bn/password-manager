@@ -17,9 +17,11 @@ set(CMAKE_AUTOMOC ON)
 add_executable(notes_manager
   include/mainwindow.hpp
   include/addNoteDialog.hpp
+  include/editNoteDialog.hpp
   src/main_qt.cpp
   src/mainwindow.cpp
   src/addNoteDialog.cpp
+  src/editNoteDialog.cpp
   src/database_manager.cpp
   src/vault.cpp
 )

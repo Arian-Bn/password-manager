@@ -1,6 +1,7 @@
 #include "mainwindow.hpp"
 #include "addNoteDialog.hpp"
 #include "database_manager.hpp"
+#include "editNoteDialog.hpp"
 #include "vault.hpp"
 #include <QGridLayout>
 #include <QListWidgetItem>
@@ -146,9 +147,24 @@ void MainWindow::onEditEntry(QListWidgetItem *item) {
     return;
 
   int id = item->data(Qt::UserRole).toInt();
-  QMessageBox::information(this, "Edit",
-                           "Edit entry ID: " + QString::number(id));
-  refreshCategoryFilter();
+
+  DatabaseManager db("Vault.db");
+  auto entry = db.getNoteEntry(id);
+
+  QString title = QString::fromStdString(std::get<1>(entry));
+  QString content = QString::fromStdString(std::get<2>(entry));
+  QString category = QString::fromStdString(std::get<3>(entry));
+
+  EditNoteDialog dialog(id, title, content, category, this);
+
+  if (dialog.exec() == QDialog::Accepted) {
+    Vault vault;
+    vault.updateNoteEntry(dialog.getId(), dialog.getTitle().toStdString(),
+                          dialog.getContent().toStdString(),
+                          dialog.getCategory().toStdString());
+    refreshEntryList();
+    refreshCategoryFilter();
+  }
 }
 
 void MainWindow::onSearchTextChanged(const QString &text) {

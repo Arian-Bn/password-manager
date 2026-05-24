@@ -11,6 +11,8 @@ public:
                     const std::string &category);
   bool deleteEntry(int id);
   void clear();
+  bool updateNoteEntry(int id, const std::string &title,
+                       const std::string &content, const std::string &category);
 
 private:
   std::unique_ptr<DatabaseManager> dbManager;

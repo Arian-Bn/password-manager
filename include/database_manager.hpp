@@ -19,6 +19,8 @@ public:
   std::vector<std::tuple<int, std::string, std::string>>
   getEntriesFiltered(const std::string &title, const std::string &category);
   std::vector<std::string> getAllCategories() const;
+  bool updateNoteEntry(int id, const std::string &title,
+                       const std::string &content, const std::string &category);
 
 private:
   SQLite::Database db_;
