@@ -65,6 +65,22 @@ TEST_F(DatabaseTest, FilterByCategory) {
   }
 }
 
+TEST_F(DatabaseTest, UpdateNote) {
+  db->addNoteEntry("Old Title", "Old Cotent", "Old Cat");
+
+  auto entries = db->getAllEntries();
+  ASSERT_EQ(entries.size(), 1);
+  int id = std::get<0>(entries[0]);
+
+  bool results = db->updateNoteEntry(id, "New Title", "New Content", "New Cat");
+  EXPECT_TRUE(results);
+
+  auto note = db->getNoteEntry(id);
+  EXPECT_EQ(std::get<1>(note), "New Title");
+  EXPECT_EQ(std::get<2>(note), "New Content");
+  EXPECT_EQ(std::get<3>(note), "New Cat");
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
