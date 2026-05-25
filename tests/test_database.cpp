@@ -39,6 +39,16 @@ TEST_F(DatabaseTest, DeleteNote) {
   EXPECT_EQ(after.size(), 0);
 }
 
+TEST_F(DatabaseTest, SearchByTitle) {
+  db->addNoteEntry("Apple", "Content1", "Fruit");
+  db->addNoteEntry("Banana", "Content2", "Fruit");
+
+  auto result = db->getEntriesFiltered("App", "");
+
+  EXPECT_EQ(result.size(), 1);
+  EXPECT_EQ(std::get<1>(result[0]), "Apple");
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
