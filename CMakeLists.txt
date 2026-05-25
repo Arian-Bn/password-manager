@@ -42,3 +42,26 @@ if(MSVC)
 else()
     target_compile_options(notes_manager PRIVATE -Wall -Wextra -Wpedantic)
 endif()
+
+enable_testing()
+
+find_package(GTest REQUIRED)
+
+add_executable(test_runner
+  tests/test_database.cpp
+  src/database_manager.cpp
+)
+
+target_link_libraries(test_runner
+  GTest::gtest
+  GTest::gtest_main
+  SQLiteCpp
+  Qt6::Core
+)
+
+target_include_directories(test_runner PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+  ${SQLITECPP_PATH}/include
+)
+
+add_test(NAME DatabaseTest COMMAND test_runner)
