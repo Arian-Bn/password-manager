@@ -4,7 +4,7 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 
 ---
 
-## 📊 Current Status: Week 3 Completed ✅
+## 📊 Current Status: Week 4 Completed ✅
 
 **Goal Achieved:** Full-featured note manager with categories, search, and edit capabilities.
 
@@ -20,6 +20,7 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 - **Input Validation**: Title cannot be empty (red highlight + placeholder text)
 - **Memory Safety**: RAII with smart pointers, no leaks
 - **Foreign Key Constraints**: ON DELETE CASCADE with PRAGMA foreign_keys=ON
+- **Unit Tests**: Google Test integration with 4 test cases (add, delete, search, filter)
 
 ### 🚀 Next Steps:
 - Google Test integration
