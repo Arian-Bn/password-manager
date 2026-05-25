@@ -17,8 +17,9 @@ protected:
 };
 
 TEST_F(DatabaseTest, AddNote) {
-  bool result = db->addNoteEntry("Test Title", "Test Content", "Test Category");
-  EXPECT_TRUE(result);
+  bool results =
+      db->addNoteEntry("Test Title", "Test Content", "Test Category");
+  EXPECT_TRUE(results);
 
   auto entries = db->getAllEntries();
   EXPECT_EQ(entries.size(), 1);
@@ -32,8 +33,8 @@ TEST_F(DatabaseTest, DeleteNote) {
   ASSERT_EQ(before.size(), 1);
 
   int id = std::get<0>(before[0]);
-  bool result = db->deleteEntry(id);
-  EXPECT_TRUE(result);
+  bool results = db->deleteEntry(id);
+  EXPECT_TRUE(results);
 
   auto after = db->getAllEntries();
   EXPECT_EQ(after.size(), 0);
@@ -43,10 +44,25 @@ TEST_F(DatabaseTest, SearchByTitle) {
   db->addNoteEntry("Apple", "Content1", "Fruit");
   db->addNoteEntry("Banana", "Content2", "Fruit");
 
-  auto result = db->getEntriesFiltered("App", "");
+  auto results = db->getEntriesFiltered("App", "");
 
-  EXPECT_EQ(result.size(), 1);
-  EXPECT_EQ(std::get<1>(result[0]), "Apple");
+  EXPECT_EQ(results.size(), 1);
+  EXPECT_EQ(std::get<1>(results[0]), "Apple");
+}
+
+TEST_F(DatabaseTest, FilterByCategory) {
+  db->addNoteEntry("Note 1", "Content1", "Work");
+  db->addNoteEntry("Note 2", "Content2", "Personal");
+  db->addNoteEntry("Note 3", "Content3", "Work");
+
+  auto results = db->getEntriesFiltered("", "Work");
+  EXPECT_EQ(results.size(), 2);
+
+  for (const auto &entry : results) {
+    int id = std::get<0>(entry);
+    auto note = db->getNoteEntry(id);
+    EXPECT_EQ(std::get<3>(note), "Work");
+  }
 }
 
 int main(int argc, char *argv[]) {
