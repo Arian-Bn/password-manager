@@ -117,6 +117,15 @@ TEST_F(DatabaseTest, SpecialCharacters) {
   EXPECT_EQ(std::get<1>(entries[0]), "Hello @#$%^&*())");
 }
 
+TEST_F(DatabaseTest, Unicode) {
+  bool results = db->addNoteEntry("Привет мир", "你好世界", "カテゴリ");
+  EXPECT_TRUE(results);
+
+  auto entries = db->getAllEntries();
+  EXPECT_EQ(entries.size(), 1);
+  EXPECT_EQ(std::get<1>(entries[0]), "Привет мир");
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
