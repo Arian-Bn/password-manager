@@ -98,6 +98,25 @@ TEST_F(DatabaseTest, EmptyContentIsAllowed) {
   EXPECT_EQ(std::get<1>(entries[0]), "Title");
 }
 
+TEST_F(DatabaseTest, VeryLongTitle) {
+  std::string longTitle(1000, 'A');
+  bool results = db->addNoteEntry(longTitle, "Content", "Cat");
+  EXPECT_TRUE(results);
+
+  auto entries = db->getAllEntries();
+  EXPECT_EQ(entries.size(), 1);
+}
+
+TEST_F(DatabaseTest, SpecialCharacters) {
+  bool results =
+      db->addNoteEntry("Hello @#$%^&*())", "Content with <>&\"\'", "Cat");
+  EXPECT_TRUE(results);
+
+  auto entries = db->getAllEntries();
+  EXPECT_EQ(entries.size(), 1);
+  EXPECT_EQ(std::get<1>(entries[0]), "Hello @#$%^&*())");
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
