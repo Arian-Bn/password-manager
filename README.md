@@ -23,11 +23,12 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 - **Unit Tests**: 11 Google Test cases covering add, delete, search, filter, update, validation, edge cases, and duplicates
 - **Memory Safety**: RAII with smart pointers, no leaks
 - **Foreign Key Constraints**: ON DELETE CASCADE with PRAGMA foreign_keys=ON
+- **CI/CD**: GitHub Actions workflow
+- **Docker**: Containerized build environment
 
 ### 🚀 Next Steps:
-- Google Test integration
-- Unit tests for database operations
-- CI/CD with GitHub Actions
+- Code documentation and comments
+- Professional README with screenshots
 
 ---
 
@@ -38,6 +39,9 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 - **SQLiteCpp** — C++ wrapper for SQLite3 (included as git submodule)
 - **CMake 3.16+** — Cross-platform build system
 - **Git** — Version control
+- **Google Test** — Unit testing framework
+- **GitHub Actions** — CI/CD automation
+- **Docker** — Containerized builds
 
 ---
 
@@ -60,7 +64,7 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 ### Build Instructions
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Arian-Bn/notes-manager.git
 cd notes-manager
 
 # Initialize submodule
@@ -72,3 +76,44 @@ cmake --build build
 
 # Run application
 ./build/notes_manager
+```
+
+---
+
+## 🧪 Testing
+
+Run all tests:
+
+```bash
+./build/test_runner
+```
+
+Or with CTest:
+
+```bash
+cd build && ctest --output-on-failure
+```
+
+Test coverage includes:
+- Add, delete, update operations
+- Search and category filter
+- Empty title validation
+- Special characters and Unicode
+- Duplicate titles
+
+---
+
+## 🔄 CI/CD
+
+GitHub Actions automatically runs on every push:
+
+- Builds project on Ubuntu 22.04
+- Installs dependencies (Qt6, CMake, GTest)
+- Runs all unit tests
+- Shows build status badge in README
+
+---
+
+## 📝 License
+
+This project is for educational purposes.
