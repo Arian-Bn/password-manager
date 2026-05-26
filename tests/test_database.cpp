@@ -23,7 +23,7 @@ TEST_F(DatabaseTest, AddNote) {
 
   auto entries = db->getAllEntries();
   EXPECT_EQ(entries.size(), 1);
-  EXPECT_EQ(std::get<1>(entries[0]), "Wrong Title");
+  EXPECT_EQ(std::get<1>(entries[0]), "Test Title");
 }
 
 TEST_F(DatabaseTest, DeleteNote) {
