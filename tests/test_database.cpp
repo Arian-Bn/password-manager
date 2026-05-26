@@ -89,6 +89,15 @@ TEST_F(DatabaseTest, EmptyTitleFields) {
   EXPECT_EQ(entries.size(), 0);
 }
 
+TEST_F(DatabaseTest, EmptyContentIsAllowed) {
+  bool results = db->addNoteEntry("Title", "", "Cat");
+  EXPECT_TRUE(results);
+
+  auto entries = db->getAllEntries();
+  EXPECT_EQ(entries.size(), 1);
+  EXPECT_EQ(std::get<1>(entries[0]), "Title");
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
