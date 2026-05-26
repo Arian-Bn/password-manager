@@ -126,6 +126,20 @@ TEST_F(DatabaseTest, Unicode) {
   EXPECT_EQ(std::get<1>(entries[0]), "Привет мир");
 }
 
+TEST_F(DatabaseTest, DuplicateTitles) {
+  bool result1 = db->addNoteEntry("Same Title", "Content 1", "Cat1");
+  bool result2 = db->addNoteEntry("Same Title", "Content 2", "Cat2");
+
+  EXPECT_TRUE(result1);
+  EXPECT_TRUE(result2);
+
+  auto entries = db->getAllEntries();
+  EXPECT_EQ(entries.size(), 2);
+
+  auto results = db->getEntriesFiltered("Same Title", "");
+  EXPECT_EQ(results.size(), 2);
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
