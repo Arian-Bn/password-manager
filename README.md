@@ -4,7 +4,7 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 
 ---
 
-## 📊 Current Status: Week 4 Completed ✅
+## 📊 Current Status: Week 5 Completed ✅
 
 **Goal Achieved:** Full-featured note manager with categories, search, and edit capabilities.
 
@@ -18,9 +18,9 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 - **Category Filter**: Dropdown with unique categories from database
 - **Note Details**: Click note to view full content and category
 - **Input Validation**: Title cannot be empty (red highlight + placeholder text)
+- **Unit Tests**: 11 Google Test cases covering add, delete, search, filter, update, validation, edge cases, and duplicates
 - **Memory Safety**: RAII with smart pointers, no leaks
 - **Foreign Key Constraints**: ON DELETE CASCADE with PRAGMA foreign_keys=ON
-- **Unit Tests**: Google Test integration with 4 test cases (add, delete, search, filter)
 
 ### 🚀 Next Steps:
 - Google Test integration
