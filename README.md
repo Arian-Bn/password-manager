@@ -1,5 +1,7 @@
 # 📝 Notes Manager
 
+[![CI](https://github.com/Arian-Bn/notes-manager/actions/workflows/build.yml/badge.svg)](https://github.com/Arian-Bn/notes-manager/actions/workflows/build.yml)
+
 A desktop note-taking application built with C++20 and Qt6. Create, edit, delete, search, and categorize notes stored in a local SQLite database. Clean architecture with RAII, smart pointers, and OOP design.
 
 ---
