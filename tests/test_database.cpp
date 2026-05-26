@@ -81,6 +81,14 @@ TEST_F(DatabaseTest, UpdateNote) {
   EXPECT_EQ(std::get<3>(note), "New Cat");
 }
 
+TEST_F(DatabaseTest, EmptyTitleFields) {
+  bool results = db->addNoteEntry("", "Content", "Cat");
+  EXPECT_FALSE(results);
+
+  auto entries = db->getAllEntries();
+  EXPECT_EQ(entries.size(), 0);
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

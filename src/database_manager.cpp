@@ -50,6 +50,9 @@ bool DatabaseManager::executeQuery(const std::string &query) {
 bool DatabaseManager::addNoteEntry(const std::string &title,
                                    const std::string &content,
                                    const std::string &category) {
+  if (title.empty()) {
+    return false;
+  }
   try {
     db_.exec("BEGIN TRANSACTION");
 
