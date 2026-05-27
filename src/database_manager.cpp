@@ -110,7 +110,7 @@ bool DatabaseManager::clearAllEntries() {
 
 bool DatabaseManager::deleteEntry(int id) {
   try {
-    db_.exec("BEGIN  TRANSACTION");
+    db_.exec("BEGIN TRANSACTION");
     SQLite::Statement query(db_, "DELETE FROM entries WHERE id = ?");
     query.bind(1, id);
     query.exec();
@@ -204,7 +204,7 @@ bool DatabaseManager::updateNoteEntry(int id, const std::string &title,
     return true;
   } catch (const std::exception &e) {
     db_.exec("ROLLBACK");
-    std::cerr << "Faild to update entry:" << e.what() << std::endl;
+    std::cerr << "Failed to update entry:" << e.what() << std::endl;
     return false;
   }
 }
