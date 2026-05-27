@@ -34,7 +34,7 @@ void AddNoteDialog::accept() {
     // Visual feedback for user
     titleEdit->setStyleSheet(
         "QLineEdit { border: 2px solid red; background: #ffeeee; }");
-    titleEdit->setPlaceholderText("Title connot be empty!");
+    titleEdit->setPlaceholderText("Title cannot be empty!");
     return; // Keep dialog open
   }
 

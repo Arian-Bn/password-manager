@@ -6,7 +6,7 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 
 ---
 
-## 📊 Current Status: Week 5 Completed ✅
+## 📊 Current Status: Week 6 Completed ✅
 
 **Goal Achieved:** Full-featured note manager with categories, search, and edit capabilities.
 
