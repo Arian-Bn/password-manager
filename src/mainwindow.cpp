@@ -193,6 +193,7 @@ void MainWindow::refreshCategoryFilter() {
   }
 }
 
+// Display full note content and category in right panel when user clicks
 void MainWindow::onNoteSelected(QListWidgetItem *item) {
   if (!item)
     return;

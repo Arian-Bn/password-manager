@@ -140,6 +140,8 @@ DatabaseManager::getNoteEntry(int id) {
   return {0, "", "", ""};
 }
 
+// Join entries and notes tables to get all note data
+// Filter by title (LIKE with wildcards) and category (exact match or all)
 std::vector<std::tuple<int, std::string, std::string>>
 DatabaseManager::getEntriesFiltered(const std::string &title,
                                     const std::string &category) {
@@ -182,6 +184,7 @@ bool DatabaseManager::updateNoteEntry(int id, const std::string &title,
                                       const std::string &content,
                                       const std::string &category) {
   try {
+    // Update both tables atomically to prevent partial updates
     db_.exec("BEGIN TRANSACTION");
 
     SQLite::Statement updateEntry(db_,
