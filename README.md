@@ -80,6 +80,16 @@ cmake --build build
 
 ---
 
+## Screenshots
+
+![01 Main Window](images/01-main-window.png)
+
+![02 Add Note Dialog](images/02-add-note-dialog.png)
+
+![03 Search Feature](images/03-search-feature.png)
+
+---
+
 ## 🧪 Testing
 
 Run all tests:
