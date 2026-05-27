@@ -6,7 +6,7 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 
 ---
 
-## 📊 Current Status: Week 6 Completed ✅
+## 📊 Project Status: Completed ✅
 
 **Goal Achieved:** Full-featured note manager with categories, search, and edit capabilities.
 
@@ -25,10 +25,6 @@ A desktop note-taking application built with C++20 and Qt6. Create, edit, delete
 - **Foreign Key Constraints**: ON DELETE CASCADE with PRAGMA foreign_keys=ON
 - **CI/CD**: GitHub Actions workflow
 - **Docker**: Containerized build environment
-
-### 🚀 Next Steps:
-- Code documentation and comments
-- Professional README with screenshots
 
 ---
 
@@ -76,6 +72,19 @@ cmake --build build
 
 # Run application
 ./build/notes_manager
+```
+
+### Docker Build
+
+```bash
+# Build image
+docker build -t notes-manager .
+
+# Run tests in container
+docker run --rm notes-manager ./build/test_runner
+
+# Run application (requires X11 server)
+docker run --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix notes-manager
 ```
 
 ---
